@@ -18,40 +18,44 @@ env. vars are expanded. Source: https://raw.githubusercontent.com/jreisinger/sys
 	flag.PrintDefaults()
 }
 
-func main() { // main runs in a goroutine
-	flag.Usage = usage
+type Command struct {
+	CmdString string
+	CmdToShow string
+	CmdToRun  *exec.Cmd
+	Channel   chan<- string
+	Verbose   bool
+	NoShell   bool
+}
 
-	verbose := flag.Bool("v", false, "be verbose")
-	noshell := flag.Bool("n", false, "don't invoke shell and don't expand env. vars")
-
-	flag.Parse()
-
-	if len(flag.Args()) != 1 {
-		usage()
-		os.Exit(1)
-	}
-
-	// Get commands to execute from a file.
-	cmds, err := readCommands(flag.Args()[0])
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error reading commands: %s. Exiting ...\n", err)
-		os.Exit(1)
-	}
-
-	ch := make(chan string)
-
-	for _, cmd := range cmds {
-		go run(cmd, ch, verbose, noshell)
-	}
-
-	for range cmds {
-		// receive from channel ch
-		fmt.Print(<-ch)
+func (c *Command) Prepare() {
+	if c.NoShell {
+		parts := strings.Split(c.CmdString, " ")
+		c.CmdToRun = exec.Command(parts[0], parts[1:]...)
+		c.CmdToShow = c.CmdString
+	} else {
+		c.CmdString = os.ExpandEnv(c.CmdString) // expand ${var} or $var
+		shellToUse := "/bin/sh"
+		c.CmdToRun = exec.Command(shellToUse, "-c", c.CmdString)
+		c.CmdToShow = shellToUse + " -c " + strconv.Quote(strings.Join(c.CmdToRun.Args[2:], " "))
 	}
 }
 
+func (c Command) Run() {
+	stdoutStderr, err := c.CmdToRun.CombinedOutput()
+	if err != nil {
+		c.Channel <- fmt.Sprintf("--> ERR: %s\n%s%s\n", c.CmdToShow, stdoutStderr, err)
+		return
+	}
+
+	if c.Verbose {
+		c.Channel <- fmt.Sprintf("--> OK: %s\n%s\n", c.CmdToShow, stdoutStderr)
+	} else {
+		c.Channel <- fmt.Sprintf("--> OK: %s\n", c.CmdToShow)
+	}
+}
+
+// readCommands reads command strings from a file.
 func readCommands(filePath string) ([]string, error) {
-	// Open the file containing commands.
 	file, err := os.Open(filePath)
 	if err != nil {
 		return nil, err
@@ -74,30 +78,43 @@ func readCommands(filePath string) ([]string, error) {
 	return cmds, scanner.Err()
 }
 
-func run(command string, ch chan<- string, verbose *bool, noshell *bool) {
-	var cmd *exec.Cmd
-	var cmdToShow string
+func main() { // main runs in a goroutine
+	// Usage and command line args.
 
-	if *noshell {
-		parts := strings.Split(command, " ")
-		cmd = exec.Command(parts[0], parts[1:]...)
-		cmdToShow = strings.Join(cmd.Args, " ")
-	} else {
-		command = os.ExpandEnv(command) // expand ${var} or $var
-		shellToUse := "/bin/sh"
-		cmd = exec.Command(shellToUse, "-c", command)
-		cmdToShow = shellToUse + " -c " + strconv.Quote(strings.Join(cmd.Args[2:], " "))
+	flag.Usage = usage
+
+	verbose := flag.Bool("v", false, "be verbose")
+	noshell := flag.Bool("n", false, "don't invoke shell and don't expand env. vars")
+
+	flag.Parse()
+
+	if len(flag.Args()) != 1 {
+		usage()
+		os.Exit(1)
 	}
 
-	stdoutStderr, err := cmd.CombinedOutput()
+	// Get commands to execute from a file.
+
+	var cmds []string
+
+	cmds, err := readCommands(flag.Args()[0])
 	if err != nil {
-		ch <- fmt.Sprintf("--> ERR: %s\n%s%s\n", cmdToShow, stdoutStderr, err)
-		return
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
 	}
 
-	if *verbose {
-		ch <- fmt.Sprintf("--> OK: %s\n%s\n", cmdToShow, stdoutStderr)
-	} else {
-		ch <- fmt.Sprintf("--> OK: %s\n", cmdToShow)
+	// Run commands in parallel.
+
+	ch := make(chan string)
+
+	for _, cmd := range cmds {
+		c := Command{CmdString: cmd, Channel: ch, Verbose: *verbose, NoShell: *noshell}
+		c.Prepare()
+		go c.Run()
+	}
+
+	// receive from channel ch
+	for range cmds {
+		fmt.Print(<-ch)
 	}
 }
