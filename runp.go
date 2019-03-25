@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"regexp"
@@ -31,11 +32,13 @@ func main() { // main runs in a goroutine
 		os.Exit(1)
 	}
 
+	log.SetPrefix("runp: ")
+	log.SetFlags(0) // no extra info in log messages
+
 	// Get commands to execute from a file.
 	cmds, err := readCommands(flag.Args()[0])
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error reading commands: %s. Exiting ...\n", err)
-		os.Exit(1)
+		log.Fatalf("Error reading commands: %s. Exiting ...\n", err)
 	}
 
 	ch := make(chan string)
