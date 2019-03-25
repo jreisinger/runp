@@ -4,7 +4,7 @@ commands (like those in `commands` folder) at the same time.
 Build (for multiple systems and architectures):
 
 ```
-./go-cross-compile.sh runp.go
+./go-cross-compile.py runp.go
 ln -sf runp-<sys>-<arch> runp
 ```
 
