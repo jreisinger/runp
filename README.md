@@ -1,13 +1,13 @@
-runp - run commands in parrallel
+`runp` - run commands in parrallel
 
-build:
+Build:
 
 ```
 ./go-cross-compile.sh runp.go
 ln -sf runp-<sys>-<arch> runp
 ```
 
-run:
+Run:
 
 ```
 ./runp <file-with-commands>
