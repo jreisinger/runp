@@ -13,7 +13,7 @@ import (
 
 func usage() {
 	desc := `Run commands defined in a file in parallel. By default, shell is invoked and
-env. vars are expanded. Source: https://raw.githubusercontent.com/jreisinger/sys/master/runp.go`
+env. vars are expanded. Source: https://github.com/jreisinger/runp`
 	fmt.Fprintf(os.Stderr, "%s\n\nUsage: %s [options] commands.txt\n", desc, os.Args[0])
 	flag.PrintDefaults()
 }
