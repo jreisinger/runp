@@ -1,0 +1,4 @@
+openstack server list --name 'test.*>'
+openstack server list --user 'test>'
+openstack floating ip list --project 'test>'
+openstack floating ip list --network 'test>'
