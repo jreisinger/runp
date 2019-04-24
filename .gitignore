@@ -1,2 +1,3 @@
-runp
-runp-*
+/runp
+/runp-*
+*.swp
