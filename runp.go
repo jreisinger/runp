@@ -9,6 +9,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func main() { // main itself runs in a goroutine
@@ -81,16 +82,18 @@ func (c *Command) Prepare() {
 }
 
 func (c Command) Run() {
+	start := time.Now()
 	stdoutStderr, err := c.CmdToRun.CombinedOutput()
+	secs := time.Since(start).Seconds()
 	if err != nil {
-		c.Channel <- fmt.Sprintf("--> ERR: %s\n%s%s\n", c.CmdToShow, stdoutStderr, err)
+		c.Channel <- fmt.Sprintf("--> ERR (%.2fs): %s\n%s%s\n", secs, c.CmdToShow, stdoutStderr, err)
 		return
 	}
 
 	if c.Verbose {
-		c.Channel <- fmt.Sprintf("--> OK: %s\n%s\n", c.CmdToShow, stdoutStderr)
+		c.Channel <- fmt.Sprintf("--> OK (%.2fs): %s\n%s\n", secs, c.CmdToShow, stdoutStderr)
 	} else {
-		c.Channel <- fmt.Sprintf("--> OK: %s\n", c.CmdToShow)
+		c.Channel <- fmt.Sprintf("--> OK (%.2fs): %s\n", secs, c.CmdToShow)
 	}
 }
 
