@@ -5,5 +5,5 @@ rm -rf $HOME/.vim/bundle/vim-nerdtree-tabs && git clone https://github.com/jistr
 rm -rf $HOME/.vim/bundle/vim-markdown && git clone https://github.com/plasticboy/vim-markdown.git $HOME/.vim/bundle/vim-markdown
 rm -rf $HOME/.vim/bundle/bufexplorer && git clone https://github.com/jlanzarotta/bufexplorer.git $HOME/.vim/bundle/bufexplorer
 rm -rf $HOME/.vim/bundle/ansible-vim && git clone https://github.com/pearofducks/ansible-vim.git $HOME/.vim/bundle/ansible-vim
-rm -rf $HOME/.vim/bundle/vim-go && git clone https://github.com/fatih/vim-go.git $HOME/.vim/bundle/vim-go
+#rm -rf $HOME/.vim/bundle/vim-go && git clone https://github.com/fatih/vim-go.git $HOME/.vim/bundle/vim-go
 rm -rf $HOME/.vim/bundle/grep.vim && git clone https://github.com/yegappan/grep.git $HOME/.vim/bundle/grep.vim

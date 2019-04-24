@@ -11,6 +11,46 @@ import (
 	"strings"
 )
 
+func main() { // main itself runs in a goroutine
+	// Usage and command line args.
+
+	flag.Usage = usage
+
+	verbose := flag.Bool("v", false, "be verbose")
+	noshell := flag.Bool("n", false, "don't invoke shell and don't expand env. vars")
+
+	flag.Parse()
+
+	if len(flag.Args()) != 1 {
+		usage()
+		os.Exit(1)
+	}
+
+	// Get commands to execute from a file.
+
+	var cmds []string
+
+	cmds, err := readCommands(flag.Args()[0])
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
+	}
+
+	// Run commands in parallel.
+
+	ch := make(chan string)
+
+	for _, cmd := range cmds {
+		c := Command{CmdString: cmd, Channel: ch, Verbose: *verbose, NoShell: *noshell}
+		c.Prepare()
+		go c.Run()
+	}
+
+	for range cmds {
+		fmt.Print(<-ch) // receive from channel ch
+	}
+}
+
 func usage() {
 	desc := `Run commands defined in a file in parallel. By default, shell is invoked and
 env. vars are expanded. Source: https://raw.githubusercontent.com/jreisinger/sys/master/runp.go`
@@ -76,45 +116,4 @@ func readCommands(filePath string) ([]string, error) {
 		cmds = append(cmds, line)
 	}
 	return cmds, scanner.Err()
-}
-
-func main() { // main runs in a goroutine
-	// Usage and command line args.
-
-	flag.Usage = usage
-
-	verbose := flag.Bool("v", false, "be verbose")
-	noshell := flag.Bool("n", false, "don't invoke shell and don't expand env. vars")
-
-	flag.Parse()
-
-	if len(flag.Args()) != 1 {
-		usage()
-		os.Exit(1)
-	}
-
-	// Get commands to execute from a file.
-
-	var cmds []string
-
-	cmds, err := readCommands(flag.Args()[0])
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		os.Exit(1)
-	}
-
-	// Run commands in parallel.
-
-	ch := make(chan string)
-
-	for _, cmd := range cmds {
-		c := Command{CmdString: cmd, Channel: ch, Verbose: *verbose, NoShell: *noshell}
-		c.Prepare()
-		go c.Run()
-	}
-
-	// receive from channel ch
-	for range cmds {
-		fmt.Print(<-ch)
-	}
 }
