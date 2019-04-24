@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"regexp"
@@ -12,17 +11,8 @@ import (
 	"strings"
 )
 
-<<<<<<< HEAD
-func usage() {
-	desc := `Run commands defined in a file in parallel. By default, shell is invoked and
-env. vars are expanded. Source: https://github.com/jreisinger/runp`
-	fmt.Fprintf(os.Stderr, "%s\n\nUsage: %s [options] commands.txt\n", desc, os.Args[0])
-	flag.PrintDefaults()
-}
-=======
 func main() { // main itself runs in a goroutine
 	// Usage and command line args.
->>>>>>> oop
 
 	flag.Usage = usage
 
@@ -36,21 +26,14 @@ func main() { // main itself runs in a goroutine
 		os.Exit(1)
 	}
 
-	log.SetPrefix("runp: ")
-	log.SetFlags(0) // no extra info in log messages
-
 	// Get commands to execute from a file.
 
 	var cmds []string
 
 	cmds, err := readCommands(flag.Args()[0])
 	if err != nil {
-<<<<<<< HEAD
-		log.Fatalf("Error reading commands: %s. Exiting ...\n", err)
-=======
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(1)
->>>>>>> oop
 	}
 
 	// Run commands in parallel.
