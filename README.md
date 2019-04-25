@@ -30,4 +30,5 @@ $ ./runp commands/install-my-stuff.txt
 ```
 
 It took 2.33 seconds as opposed to the sum of all times as it would in case the
-commands run sequentially.
+commands run sequentially. I have included it into my
+[.bashrc](https://github.com/jreisinger/dotfiles/blob/master/.bashrc).
