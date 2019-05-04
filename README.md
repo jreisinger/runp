@@ -1,5 +1,4 @@
-`runp` - run commands in parallel. Useful when you want to run multiple
-commands (like those in `commands` folder) at the same time.
+`runp` runs commands in parallel. It's useful when you want to run multiple commands (like those in `commands` folder) at the same time.
 
 Build (for multiple systems and architectures):
 
@@ -14,7 +13,7 @@ Run:
 ./runp <file-with-commands>
 ```
 
-Example use case - installing my `vim` plugins:
+Example use case - installing my `vim` plugins (+ some other stuff):
 
 ```
 $ ./runp commands/install-my-stuff.txt
@@ -29,6 +28,4 @@ $ ./runp commands/install-my-stuff.txt
 --> OK (2.33s): /bin/sh -c "rm -rf /Users/reisinge/.vim/pack/dist/start/vim-airline && git clone https://github.com/vim-airline/vim-airline /Users/reisinge/.vim/pack/dist/start/vim-airline"
 ```
 
-It took 2.33 seconds as opposed to the sum of all times as it would in case the
-commands run sequentially. I have included it into my
-[.bashrc](https://github.com/jreisinger/dotfiles/blob/master/.bashrc).
+It took 2.33 seconds as opposed to the sum of all times as it would in case the commands run sequentially. I have included it into my [.bashrc](https://github.com/jreisinger/dotfiles/blob/master/.bashrc).
