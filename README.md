@@ -1,5 +1,12 @@
 `runp` runs commands in parallel. It's useful when you want to run multiple commands (like those in `commands` folder) at the same time.
 
+Test:
+
+```
+export GOPATH=`pwd`
+go test
+```
+
 Build (for multiple systems and architectures):
 
 ```
