@@ -111,12 +111,16 @@ func readCommands(filePath string) ([]string, error) {
 		line := scanner.Text()
 
 		// skip comments
-		match, _ := regexp.MatchString("^(#|/)", line)
-		if match {
+		if isComment(line) {
 			continue
 		}
 
 		cmds = append(cmds, line)
 	}
 	return cmds, scanner.Err()
+}
+
+func isComment(line string) bool {
+	match, _ := regexp.MatchString("^(#|//)", line)
+	return match
 }
