@@ -54,7 +54,7 @@ func main() { // main itself runs in a goroutine
 
 func usage() {
 	desc := `Run commands defined in a file in parallel. By default,
-shell is invoked and env. vars are expanded.`
+shell is invoked and env. vars are expanded. Comments are skipped.`
 	fmt.Fprintf(os.Stderr, "%s\n\nUsage: %s [options] commands.txt\n", desc, os.Args[0])
 	flag.PrintDefaults()
 }
