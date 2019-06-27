@@ -42,20 +42,34 @@ func TestIsComment(t *testing.T) {
         // no comments
         { "", false },
         { "ls -l", false },
-        { "/urs/bin/perl -e 'print \"hello\n\"'", false },
-        // comments
-        { "// comment", true },
+        { " ls -l", false },
+        { "/usr/bin/perl -e 'print \"hello\n\"'", false },
+        { "ls -l //etc/passwd", false },
+        { "ls -l //etc/passwd # comment", false },
+        { " ls -l /etc/passwd // comment", false },
+
+        // bash-style comments
+        { "#", true },
+        { "##", true },
+        { "###", true },
         { "# comment", true },
+        { " # comment", true },
+        { "#ls -l", true },
+        { " #ls -l", true },
+        { "#/usr/bin/perl -e 'print \"hello\n\"'", true },
+
+        // golang-style comments
+        { "// comment", true },
+        { " // comment", true },
+        { "//ls -l", true },
+        { " //ls -l", true },
+        { "///usr/bin/perl -e 'print \"hello\n\"'", true },
     }
 
     for _, pair := range tests {
         v := isComment(pair.line)
         if v != pair.isComment {
-            t.Fatal(
-                "For", pair.line,
-                "expected", pair.isComment,
-                "got", v,
-            )
+            t.Fatalf("For [%s] expected %v got %v\n", pair.line, pair.isComment, v)
         }
     }
 }
