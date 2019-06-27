@@ -31,3 +31,31 @@ func TestCommandPrepare(t *testing.T) {
         t.Fatalf("CmdToShow is wrong")
     }
 }
+
+func TestIsComment(t *testing.T) {
+    type testpair struct {
+        line        string
+        isComment   bool
+    }
+
+    tests := []testpair{
+        // no comments
+        { "", false },
+        { "ls -l", false },
+        { "/urs/bin/perl -e 'print \"hello\n\"'", false },
+        // comments
+        { "// comment", true },
+        { "# comment", true },
+    }
+
+    for _, pair := range tests {
+        v := isComment(pair.line)
+        if v != pair.isComment {
+            t.Fatal(
+                "For", pair.line,
+                "expected", pair.isComment,
+                "got", v,
+            )
+        }
+    }
+}
