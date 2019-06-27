@@ -122,6 +122,6 @@ func readCommands(filePath string) ([]string, error) {
 
 // isComment returns true if line is a comment.
 func isComment(line string) bool {
-	match, _ := regexp.MatchString("^(#|//)", line)
+	match, _ := regexp.MatchString(`^\s*(#|//)`, line)
 	return match
 }
