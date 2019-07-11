@@ -76,6 +76,7 @@ is invoked and env. vars are expanded. Comments are skipped.`
 	flag.PrintDefaults()
 }
 
+// Command represents a command.
 type Command struct {
 	CmdString string
 	CmdToShow string
@@ -85,6 +86,7 @@ type Command struct {
 	NoShell   bool
 }
 
+// Prepare prepares a command to be run.
 func (c *Command) Prepare() {
 	if c.NoShell {
 		parts := strings.Split(c.CmdString, " ")
@@ -98,6 +100,7 @@ func (c *Command) Prepare() {
 	}
 }
 
+// Run runs a command.
 func (c Command) Run() {
 	start := time.Now()
 	stdoutStderr, err := c.CmdToRun.CombinedOutput()
