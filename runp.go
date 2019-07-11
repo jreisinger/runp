@@ -41,6 +41,7 @@ func main() { // main itself runs in a goroutine
 
 	ch := make(chan string)
 
+	go progressBar()
 	for _, cmd := range cmds {
 		c := Command{CmdString: cmd, Channel: ch, Verbose: *verbose, NoShell: *noshell}
 		c.Prepare()
@@ -49,6 +50,22 @@ func main() { // main itself runs in a goroutine
 
 	for range cmds {
 		fmt.Print(<-ch) // receive from channel ch
+	}
+}
+
+func progressBar() {
+	for {
+		count := 0
+		for {
+			count++
+			time.Sleep(100 * time.Millisecond)
+			if count == 3 {
+				fmt.Printf(">\r")
+				count = 0
+				continue
+			}
+			fmt.Printf("-")
+		}
 	}
 }
 
@@ -86,14 +103,14 @@ func (c Command) Run() {
 	stdoutStderr, err := c.CmdToRun.CombinedOutput()
 	secs := time.Since(start).Seconds()
 	if err != nil {
-		c.Channel <- fmt.Sprintf("--> ERR (%.2fs): %s\n%s%s\n", secs, c.CmdToShow, stdoutStderr, err)
+		c.Channel <- fmt.Sprintf("\r--> ERR (%.2fs): %s\n%s%s\n", secs, c.CmdToShow, stdoutStderr, err)
 		return
 	}
 
 	if c.Verbose {
-		c.Channel <- fmt.Sprintf("--> OK (%.2fs): %s\n%s\n", secs, c.CmdToShow, stdoutStderr)
+		c.Channel <- fmt.Sprintf("\r--> OK (%.2fs): %s\n%s\n", secs, c.CmdToShow, stdoutStderr)
 	} else {
-		c.Channel <- fmt.Sprintf("--> OK (%.2fs): %s\n", secs, c.CmdToShow)
+		c.Channel <- fmt.Sprintf("\r--> OK (%.2fs): %s\n", secs, c.CmdToShow)
 	}
 }
 
