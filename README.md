@@ -26,7 +26,7 @@ Run:
 ./runp <file-with-commands>
 ```
 
-Example use case - installing my `vim` plugins (+ some other stuff):
+Example use case:
 
 ```
 $ ./runp commands/test.txt
