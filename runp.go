@@ -10,6 +10,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/fatih/color"
 )
 
 func main() { // main itself runs in a goroutine
@@ -106,7 +108,9 @@ func (c Command) Run() {
 	stdoutStderr, err := c.CmdToRun.CombinedOutput()
 	secs := time.Since(start).Seconds()
 	if err != nil {
-		c.Channel <- fmt.Sprintf("\r--> ERR (%.2fs): %s\n%s%s\n", secs, c.CmdToShow, stdoutStderr, err)
+		red := color.New(color.FgRed).SprintFunc()
+		//c.Channel <- fmt.Sprintf("\r--> ERR (%.2fs): %s\n%s%s\n", secs, c.CmdToShow, stdoutStderr, err)
+		c.Channel <- fmt.Sprintf("\r--> %s (%.2fs): %s\n%s%s\n", red("ERR"), secs, c.CmdToShow, stdoutStderr, err)
 		return
 	}
 

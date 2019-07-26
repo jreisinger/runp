@@ -1,3 +1,5 @@
 /runp
 /runp-*
 *.swp
+/src
+/pkg
