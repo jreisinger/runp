@@ -21,8 +21,14 @@ func main() { // main itself runs in a goroutine
 
 	verbose := flag.Bool("v", false, "be verbose")
 	noshell := flag.Bool("n", false, "don't invoke shell and don't expand env. vars")
+	version := flag.Bool("V", false, "print version")
 
 	flag.Parse()
+
+	if *version {
+		fmt.Printf("runp %s\n", "v0.0.2")
+		os.Exit(0)
+	}
 
 	if len(flag.Args()) != 1 {
 		usage()
