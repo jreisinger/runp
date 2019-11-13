@@ -5,7 +5,7 @@ rm -rf $HOME/.vim/pack/plugins/start/vim-nerdtree-tabs && git clone https://gith
 rm -rf $HOME/.vim/pack/plugins/start/vim-markdown && git clone https://github.com/plasticboy/vim-markdown.git $HOME/.vim/pack/plugins/start/vim-markdown
 rm -rf $HOME/.vim/pack/plugins/start/bufexplorer && git clone https://github.com/jlanzarotta/bufexplorer.git $HOME/.vim/pack/plugins/start/bufexplorer
 rm -rf $HOME/.vim/pack/plugins/start/ansible-vim && git clone https://github.com/pearofducks/ansible-vim.git $HOME/.vim/pack/plugins/start/ansible-vim
-#rm -rf $HOME/.vim/pack/plugins/start/vim-go && git clone https://github.com/fatih/vim-go.git $HOME/.vim/pack/plugins/start/vim-go
+rm -rf $HOME/.vim/pack/plugins/start/vim-go && git clone https://github.com/fatih/vim-go.git $HOME/.vim/pack/plugins/start/vim-go
 rm -rf $HOME/.vim/pack/plugins/start/grep.vim && git clone https://github.com/yegappan/grep.git $HOME/.vim/pack/plugins/start/grep.vim
 # https://tpaschalis.github.io/vim-go-setup/
 rm -rf $HOME/.vim/pack/plugins/start/vim-airline && git clone https://github.com/vim-airline/vim-airline $HOME/.vim/pack/plugins/start/vim-airline
