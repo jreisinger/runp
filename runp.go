@@ -78,8 +78,8 @@ func progressBar() {
 }
 
 func usage() {
-	desc := `Run commands defined in a file in parallel. By default, shell
-is invoked and env. vars are expanded. Comments are skipped.`
+	desc := `Run commands defined in a file in parallel. By default, shell is
+invoked and env. vars are expanded. Comments and empty lines are skipped.`
 	fmt.Fprintf(os.Stderr, "%s\n\nUsage: %s [options] commands.txt\n", desc, os.Args[0])
 	flag.PrintDefaults()
 }
@@ -121,7 +121,7 @@ func (c Command) Run() {
 	}
 
 	if c.Verbose {
-		c.Channel <- fmt.Sprintf("\r--> OK (%.2fs): %s\n%s\n", secs, c.CmdToShow, stdoutStderr)
+		c.Channel <- fmt.Sprintf("\r--> OK (%.2fs): %s\n%s", secs, c.CmdToShow, stdoutStderr)
 	} else {
 		c.Channel <- fmt.Sprintf("\r--> OK (%.2fs): %s\n", secs, c.CmdToShow)
 	}
@@ -145,9 +145,20 @@ func readCommands(filePath string) ([]string, error) {
 			continue
 		}
 
+		// skip empty lines
+		if isEmpty(line) {
+			continue
+		}
+
 		cmds = append(cmds, line)
 	}
 	return cmds, scanner.Err()
+}
+
+// isEmpty returns true if line is empty.
+func isEmpty(line string) bool {
+	var emptyLine = regexp.MustCompile(`^\s*$`)
+	return emptyLine.MatchString(line)
 }
 
 // isComment returns true if line is a comment.

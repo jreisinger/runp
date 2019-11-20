@@ -32,6 +32,40 @@ func TestCommandPrepare(t *testing.T) {
 	}
 }
 
+func TestReadCommands(t *testing.T) {
+	cmds, _ := readCommands("commands/test.txt")
+	for _, c := range cmds {
+		if c == "" {
+			t.Fatalf("Empty line not ignored")
+		}
+	}
+}
+
+func TestIsEmpty(t *testing.T) {
+	type testpair struct {
+		line    string
+		isempty bool
+	}
+
+	tests := []testpair{
+		{"", true},
+		{" ", true},
+		{"    ", true},
+		{"\t", true},
+		{"#", false},
+		{"//", false},
+		{"a", false},
+		{" a", false},
+	}
+
+	for _, pair := range tests {
+		v := isEmpty(pair.line)
+		if v != pair.isempty {
+			t.Fatalf("For [%s] expected %v got %v\n", pair.line, pair.isempty, v)
+		}
+	}
+}
+
 func TestIsComment(t *testing.T) {
 	type testpair struct {
 		line      string
