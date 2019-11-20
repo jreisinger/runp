@@ -26,7 +26,7 @@ func main() { // main itself runs in a goroutine
 	flag.Parse()
 
 	if *version {
-		fmt.Printf("runp %s\n", "v0.0.2")
+		fmt.Printf("runp %s\n", "v1.0.0")
 		os.Exit(0)
 	}
 
