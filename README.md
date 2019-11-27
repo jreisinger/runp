@@ -4,6 +4,8 @@
 
 ## Installation
 
+Download the latest [release](https://github.com/jreisinger/runp/releases) to your `bin` folder and make it executable:
+
 ```
 export SYS=linux  # darwin
 export ARCH=amd64 # arm
@@ -30,7 +32,9 @@ exit status 127
 --> OK (9.01s): /bin/sh -c "sleep 9"
 ```
 
-Running all the commands took 9.01 seconds. As opposed to the sum of all times in case the commands ran sequentially. If the command exits with 0 runp prints `OK`. Otherwise it prints `ERR` (in red) and STDERR. If you want to see also STDOUT use the `-v` switch. You can use shell variables in the commands. See `commands` folder for more examples.
+Running all the commands took 9.01 seconds. As opposed to the sum of all times in case the commands ran sequentially. If the command exits with 0 runp prints `OK`. Otherwise it prints `ERR` (in red) and STDERR. If you want to see also STDOUT use the `-v` switch.
+
+You can use shell variables in the commands. Empty lines and comments are ingored. See `commands` folder for more examples.
 
 ## Development
 
