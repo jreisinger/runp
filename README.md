@@ -13,13 +13,11 @@ curl --location https://github.com/jreisinger/runp/releases/latest/download/runp
 --output ~/bin/runp && chmod u+x ~/bin/runp
 ```
 
-## Usage
+## Usage examples
 
-```
-$ runp [-v] <file-with-commands>
-```
+You can use shell variables in the commands. Commands have to be separated by newlines. Empty lines and comments are ignored.
 
-Example:
+### Test commands
 
 ```
 $ runp commands/test.txt
@@ -34,7 +32,17 @@ exit status 127
 
 Running all the commands took 9.01 seconds. As opposed to the sum of all times in case the commands ran sequentially. If the command exits with 0 runp prints `OK`. Otherwise it prints `ERR` (in red) and STDERR. If you want to see also STDOUT use the `-v` switch.
 
-You can use shell variables in the commands. Empty lines and comments are ingored. See `commands` folder for more examples.
+### Get some NASA images in parallel
+
+```
+base='https://images-api.nasa.gov/search'
+query='apollo%2011'
+desc='moon%20landing'
+type='image'
+for url in $(curl "$base?q=$query&description=$desc&media_type=$type" | \
+jq -r .collection.items[].href | head); do curl $url | jq -r .[] | grep large; done 2> /dev/null | \
+runp -p 'curl -L -O'
+```
 
 ## Development
 
