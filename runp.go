@@ -101,8 +101,8 @@ func progressBar() {
 }
 
 func usage() {
-	desc := `Run commands from file(s) or stdin in parallel. By default, shell is
-invoked and env. vars are expanded. Comments and empty lines are skipped.`
+	desc := `Run commands from file(s) or stdin in parallel. Commands are
+separated by newlines. Comments and empty lines are skipped.`
 	fmt.Fprintf(os.Stderr, "%s\n\nUsage: %s [options] [file ...]\n", desc, os.Args[0])
 	flag.PrintDefaults()
 }
