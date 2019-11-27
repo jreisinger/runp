@@ -1,6 +1,6 @@
 ## About
 
-`runp` runs shell commands in parallel (or concurrently). It's useful when you want to run multiple commands (like those in `commands` folder) at the same time.
+`runp` runs shell commands in parallel (or concurrently). It's useful when you want to run multiple commands (like those in `commands` folder) at the same time. You can use shell variables in the commands.
 
 Similar tools:
 
