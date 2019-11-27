@@ -1,6 +1,6 @@
 ## About
 
-`runp` runs shell commands in parallel. It's useful when you want to run multiple commands (like those in `commands` folder) at the same time.
+`runp` runs shell commands in parallel (or concurrently). It's useful when you want to run multiple commands (like those in `commands` folder) at the same time.
 
 Similar tools:
 
@@ -35,6 +35,8 @@ exit status 127
 ```
 
 It took 9.01 seconds as opposed to the sum of all times as it would in case the commands run sequentially. If the command exits with 0 runp prints `OK`. Otherwise it prints `ERR` (in red) and STDERR. If you want to see also STDOUT use the `-v` switch.
+
+See `commands` folder for more examples.
 
 ## Development
 
