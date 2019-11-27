@@ -22,27 +22,44 @@ func main() { // main itself runs in a goroutine
 	verbose := flag.Bool("v", false, "be verbose")
 	noshell := flag.Bool("n", false, "don't invoke shell and don't expand env. vars")
 	version := flag.Bool("V", false, "print version")
+	prefix := flag.String("p", "", "prefix to put in front of the commands")
+	suffix := flag.String("s", "", "suffix to put behind the commands")
 
 	flag.Parse()
 
 	if *version {
-		fmt.Printf("runp %s\n", "v1.1.0")
+		fmt.Printf("runp %s\n", "v1.2.0")
 		os.Exit(0)
 	}
 
-	if len(flag.Args()) != 1 {
-		usage()
-		os.Exit(1)
-	}
-
-	// Get commands to execute from a file.
-
+	// All commands to execute.
 	var cmds []string
 
-	cmds, err := readCommands(flag.Args()[0])
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		os.Exit(1)
+	if len(flag.Args()) == 0 {
+		// Get commands to execute from STDIN.
+		fileCmds, err := readCommands(os.Stdin)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%v\n", err)
+			os.Exit(1)
+		}
+		cmds = append(cmds, fileCmds...)
+	} else {
+		// Get commands to execute from files.
+		for _, arg := range flag.Args() {
+			file, err := os.Open(arg)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "%v\n", err)
+				continue
+			}
+			defer file.Close()
+
+			fileCmds, err := readCommands(file)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "%v\n", err)
+				os.Exit(1)
+			}
+			cmds = append(cmds, fileCmds...)
+		}
 	}
 
 	// Run commands in parallel.
@@ -51,6 +68,12 @@ func main() { // main itself runs in a goroutine
 
 	go progressBar()
 	for _, cmd := range cmds {
+		if *prefix != "" {
+			cmd = *prefix + " " + cmd
+		}
+		if *suffix != "" {
+			cmd = cmd + " " + *suffix
+		}
 		c := Command{CmdString: cmd, Channel: ch, Verbose: *verbose, NoShell: *noshell}
 		c.Prepare()
 		go c.Run()
@@ -78,9 +101,9 @@ func progressBar() {
 }
 
 func usage() {
-	desc := `Run commands defined in a file in parallel. By default, shell is
+	desc := `Run commands from file(s) or stdin in parallel. By default, shell is
 invoked and env. vars are expanded. Comments and empty lines are skipped.`
-	fmt.Fprintf(os.Stderr, "%s\n\nUsage: %s [options] commands.txt\n", desc, os.Args[0])
+	fmt.Fprintf(os.Stderr, "%s\n\nUsage: %s [options] [file ...]\n", desc, os.Args[0])
 	flag.PrintDefaults()
 }
 
@@ -127,14 +150,8 @@ func (c Command) Run() {
 	}
 }
 
-// readCommands reads command strings from a file.
-func readCommands(filePath string) ([]string, error) {
-	file, err := os.Open(filePath)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
+// readCommands reads in commands.
+func readCommands(file *os.File) ([]string, error) {
 	var cmds []string
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {

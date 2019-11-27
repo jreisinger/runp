@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"testing"
 )
 
@@ -33,7 +34,8 @@ func TestCommandPrepare(t *testing.T) {
 }
 
 func TestReadCommands(t *testing.T) {
-	cmds, _ := readCommands("commands/test.txt")
+	f, _ := os.Open("dommands/test.txt")
+	cmds, _ := readCommands(f)
 	for _, c := range cmds {
 		if c == "" {
 			t.Fatalf("Empty line not ignored")
