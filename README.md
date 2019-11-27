@@ -2,7 +2,11 @@
 
 `runp` runs shell commands in parallel. It's useful when you want to run multiple commands (like those in `commands` folder) at the same time.
 
-Installation:
+Similar tools:
+
+* [GNU parallel](https://www.gnu.org/software/parallel/)
+
+## Installation
 
 ```
 export SYS=linux  # darwin
@@ -11,7 +15,7 @@ curl --location https://github.com/jreisinger/runp/releases/latest/download/runp
 --output ~/bin/runp && chmod u+x ~/bin/runp
 ```
 
-Usage:
+## Usage
 
 ```
 $ runp [-v] <file-with-commands>
