@@ -30,7 +30,7 @@ exit status 127
 --> OK (9.01s): /bin/sh -c "sleep 9"
 ```
 
-It took 9.01 seconds as opposed to the sum of all times as it would in case the commands run sequentially. If the command exits with 0 `runp` prints OK. Otherwise it prints ERR (in red) and STDERR. If you want to see also STDOUT use the `-v` switch.
+It took 9.01 seconds as opposed to the sum of all times as it would in case the commands run sequentially. If the command exits with 0 runp prints `OK`. Otherwise it prints `ERR` (in red) and STDERR. If you want to see also STDOUT use the `-v` switch.
 
 ## Development
 
