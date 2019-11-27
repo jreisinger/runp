@@ -7,8 +7,8 @@ Installation:
 ```
 export SYS=linux  # darwin
 export ARCH=amd64 # arm
-curl --location https://github.com/jreisinger/runp/releases/latest/download/runp-$SYS-$ARCH --output ~/bin/runp && chmod u+x ~/bin/runp
-runp -V
+curl --location https://github.com/jreisinger/runp/releases/latest/download/runp-$SYS-$ARCH \
+--output ~/bin/runp && chmod u+x ~/bin/runp
 ```
 
 Usage:
@@ -51,5 +51,6 @@ Build (for multiple systems and architectures):
 
 ```
 ./go-cross-compile.py runp.go
-ln -sf runp-<sys>-<arch> runp
+ln -sf runp-$SYS-$ARCH runp
+./runp
 ```
