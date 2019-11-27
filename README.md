@@ -1,10 +1,6 @@
 ## About
 
-`runp` runs shell commands in parallel (or concurrently). It's useful when you want to run multiple commands (like those in `commands` folder) at the same time. You can use shell variables in the commands.
-
-Similar tools:
-
-* [GNU parallel](https://www.gnu.org/software/parallel/)
+`runp` runs shell commands in parallel (or concurrently). It's useful when you want to run multiple shell commands at once to save time. It's somehow similar to the GNU [parallel](https://www.gnu.org/software/parallel/) tool.
 
 ## Installation
 
@@ -25,18 +21,16 @@ Example:
 
 ```
 $ runp commands/test.txt
---> OK (0.01s): /bin/sh -c "ls"
---> ERR (0.02s): /bin/sh -c "blah"
+--> ERR (0.00s): /bin/sh -c "blah"
 /bin/sh: 1: blah: not found
 exit status 127
---> OK (3.02s): /bin/sh -c "sleep 3"
---> OK (5.02s): /bin/sh -c "sleep 5"
+--> OK (0.00s): /bin/sh -c "ls /home/reisinge/github/runp # 'PWD' shell variable is used here"
+--> OK (3.00s): /bin/sh -c "sleep 3"
+--> OK (5.00s): /bin/sh -c "sleep 5"
 --> OK (9.01s): /bin/sh -c "sleep 9"
 ```
 
-It took 9.01 seconds as opposed to the sum of all times as it would in case the commands run sequentially. If the command exits with 0 runp prints `OK`. Otherwise it prints `ERR` (in red) and STDERR. If you want to see also STDOUT use the `-v` switch.
-
-See `commands` folder for more examples.
+Running all the commands took 9.01 seconds. As opposed to the sum of all times in case the commands ran sequentially. If the command exits with 0 runp prints `OK`. Otherwise it prints `ERR` (in red) and STDERR. If you want to see also STDOUT use the `-v` switch. You can use shell variables in the commands. See `commands` folder for more examples.
 
 ## Development
 

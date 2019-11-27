@@ -6,4 +6,4 @@ blah
 # comment
 sleep 9
 
-ls
+ls $PWD # 'PWD' shell variable is used here
