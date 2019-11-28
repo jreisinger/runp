@@ -32,7 +32,7 @@ exit status 127
 
 Running all the commands took 9.01 seconds. As opposed to the sum of all times in case the commands ran sequentially. If the command exits with 0 runp prints `OK`. Otherwise it prints `ERR` (in red) and STDERR. If you want to see also STDOUT use the `-v` switch.
 
-### Ger directories' sizes (stdin)
+### Get directories' sizes (stdin)
 
 ```
 $ echo -e "/home\n/etc\n/tmp\n/data/backup\n/data/public" | sudo runp -v -p 'du -sh'
