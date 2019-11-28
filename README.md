@@ -35,17 +35,17 @@ Running all the commands took 9.02 seconds. As opposed to the sum of all times i
 ### Get directories' sizes (stdin)
 
 ```
-$ echo -e "/home\n/etc\n/tmp\n/data/backup\n/data/public" | sudo runp -p 'du -sh'
---> OK (0.04s): /bin/sh -c "du -sh /tmp"
-472K    /tmp
---> OK (0.09s): /bin/sh -c "du -sh /etc"
-7.1M    /etc
---> OK (0.49s): /bin/sh -c "du -sh /home"
-933M    /home
---> OK (5.59s): /bin/sh -c "du -sh /data/backup"
-292G    /data/backup
---> OK (32.45s): /bin/sh -c "du -sh /data/public"
-415G    /data/public
+$ echo -e "/home\n/etc\n/tmp\n/data/backup\n/data/public" | sudo runp -n -p 'du -sh'
+--> OK (0.02s): du -sh /tmp
+476K	/tmp
+--> OK (0.03s): du -sh /etc
+7.1M	/etc
+--> OK (0.33s): du -sh /home
+933M	/home
+--> OK (0.74s): du -sh /data/public
+416G	/data/public
+--> OK (2.55s): du -sh /data/backup
+292G	/data/backup
 ```
 
 ### Get some NASA images (stdin)
