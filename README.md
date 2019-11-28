@@ -17,7 +17,7 @@ curl --location https://github.com/jreisinger/runp/releases/latest/download/runp
 
 You can use shell variables in the commands. Commands have to be separated by newlines. Empty lines and comments are ignored.
 
-### Test commands (file)
+### Run test commands (file)
 
 ```
 $ runp commands/test.txt
