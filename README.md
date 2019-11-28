@@ -20,7 +20,7 @@ You can use shell variables in the commands. Commands have to be separated by ne
 ### Run test commands (file)
 
 ```
-$ ./runp commands/test.txt > /dev/null
+$ runp commands/test.txt > /dev/null
 --> OK (0.01s): /bin/sh -c "ls /Users/reisinge/github/runp # 'PWD' shell variable is used here"
 --> ERR (0.01s): /bin/sh -c "blah"
 exit status 127
