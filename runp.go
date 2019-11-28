@@ -136,33 +136,33 @@ func (c *Command) Prepare() {
 func (c Command) Run() {
 	stderr, err := c.CmdToRun.StderrPipe()
 	if err != nil {
-		c.stderrCh <- fmt.Sprintf("%s", err)
+		c.stderrCh <- fmt.Sprintf("creating stderr pipe for %s: %s\n", c.CmdToShow, err)
 		c.stdoutCh <- fmt.Sprintf("%s", "")
 	}
 
 	stdout, err := c.CmdToRun.StdoutPipe()
 	if err != nil {
-		c.stderrCh <- fmt.Sprintf("%s", err)
+		c.stderrCh <- fmt.Sprintf("creating stdout pipe for %s: %s\n", c.CmdToShow, err)
 		c.stdoutCh <- fmt.Sprintf("%s", "")
 	}
 
 	start := time.Now()
 
 	if err := c.CmdToRun.Start(); err != nil {
-		c.stderrCh <- fmt.Sprintf("%s", err)
+		c.stderrCh <- fmt.Sprintf("starting command %s: %s\n", c.CmdToShow, err)
 		c.stdoutCh <- fmt.Sprintf("%s", "")
 		return
 	}
 
 	slurpErr, err := ioutil.ReadAll(stderr)
 	if err != nil {
-		c.stderrCh <- fmt.Sprintf("%s", err)
+		c.stderrCh <- fmt.Sprintf("slurping stderr of %s: %s\n", c.CmdToShow, err)
 		c.stdoutCh <- fmt.Sprintf("%s", "")
 	}
 
 	slurpOut, err := ioutil.ReadAll(stdout)
 	if err != nil {
-		c.stderrCh <- fmt.Sprintf("%s", err)
+		c.stderrCh <- fmt.Sprintf("slurping stdout of %s: %s\n", c.CmdToShow, err)
 		c.stdoutCh <- fmt.Sprintf("%s", "")
 	}
 
