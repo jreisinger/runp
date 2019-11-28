@@ -4,14 +4,13 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"regexp"
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/fatih/color"
 )
 
 func main() { // main itself runs in a goroutine
@@ -19,7 +18,6 @@ func main() { // main itself runs in a goroutine
 
 	flag.Usage = usage
 
-	verbose := flag.Bool("v", false, "be verbose")
 	noshell := flag.Bool("n", false, "don't invoke shell and don't expand env. vars")
 	version := flag.Bool("V", false, "print version")
 	prefix := flag.String("p", "", "prefix to put in front of the commands")
@@ -28,11 +26,11 @@ func main() { // main itself runs in a goroutine
 	flag.Parse()
 
 	if *version {
-		fmt.Printf("runp %s\n", "v1.2.0")
+		fmt.Printf("runp %s\n", "v2.0.0")
 		os.Exit(0)
 	}
 
-	// All commands to execute.
+	// all commands to execute
 	var cmds []string
 
 	if len(flag.Args()) == 0 {
@@ -64,7 +62,8 @@ func main() { // main itself runs in a goroutine
 
 	// Run commands in parallel.
 
-	ch := make(chan string)
+	stderrChan := make(chan string)
+	stdoutChan := make(chan string)
 
 	go progressBar()
 	for _, cmd := range cmds {
@@ -74,14 +73,16 @@ func main() { // main itself runs in a goroutine
 		if *suffix != "" {
 			cmd = cmd + " " + *suffix
 		}
-		c := Command{CmdString: cmd, Channel: ch, Verbose: *verbose, NoShell: *noshell}
+		c := Command{CmdString: cmd, stdoutCh: stdoutChan, stderrCh: stderrChan, NoShell: *noshell}
 		c.Prepare()
 		go c.Run()
 	}
 
 	for range cmds {
-		fmt.Print(<-ch) // receive from channel ch
+		fmt.Fprint(os.Stderr, <-stderrChan)
+		fmt.Fprint(os.Stdout, <-stdoutChan)
 	}
+
 }
 
 func progressBar() {
@@ -91,11 +92,11 @@ func progressBar() {
 			count++
 			time.Sleep(100 * time.Millisecond)
 			if count == 3 {
-				fmt.Printf(">\r")
+				fmt.Fprintf(os.Stderr, ">\r")
 				count = 0
 				continue
 			}
-			fmt.Printf("-")
+			fmt.Fprintf(os.Stderr, "-")
 		}
 	}
 }
@@ -112,8 +113,8 @@ type Command struct {
 	CmdString string
 	CmdToShow string
 	CmdToRun  *exec.Cmd
-	Channel   chan<- string
-	Verbose   bool
+	stdoutCh  chan<- string
+	stderrCh  chan<- string
 	NoShell   bool
 }
 
@@ -133,21 +134,50 @@ func (c *Command) Prepare() {
 
 // Run runs a command.
 func (c Command) Run() {
-	start := time.Now()
-	stdoutStderr, err := c.CmdToRun.CombinedOutput()
-	secs := time.Since(start).Seconds()
+	stderr, err := c.CmdToRun.StderrPipe()
 	if err != nil {
-		red := color.New(color.FgRed).SprintFunc()
-		//c.Channel <- fmt.Sprintf("\r--> ERR (%.2fs): %s\n%s%s\n", secs, c.CmdToShow, stdoutStderr, err)
-		c.Channel <- fmt.Sprintf("\r--> %s (%.2fs): %s\n%s%s\n", red("ERR"), secs, c.CmdToShow, stdoutStderr, err)
+		c.stderrCh <- fmt.Sprintf("%s", err)
+		c.stdoutCh <- fmt.Sprintf("%s", "")
+	}
+
+	stdout, err := c.CmdToRun.StdoutPipe()
+	if err != nil {
+		c.stderrCh <- fmt.Sprintf("%s", err)
+		c.stdoutCh <- fmt.Sprintf("%s", "")
+	}
+
+	start := time.Now()
+
+	if err := c.CmdToRun.Start(); err != nil {
+		c.stderrCh <- fmt.Sprintf("%s", err)
+		c.stdoutCh <- fmt.Sprintf("%s", "")
 		return
 	}
 
-	if c.Verbose {
-		c.Channel <- fmt.Sprintf("\r--> OK (%.2fs): %s\n%s", secs, c.CmdToShow, stdoutStderr)
-	} else {
-		c.Channel <- fmt.Sprintf("\r--> OK (%.2fs): %s\n", secs, c.CmdToShow)
+	slurpErr, err := ioutil.ReadAll(stderr)
+	if err != nil {
+		c.stderrCh <- fmt.Sprintf("%s", err)
+		c.stdoutCh <- fmt.Sprintf("%s", "")
 	}
+
+	slurpOut, err := ioutil.ReadAll(stdout)
+	if err != nil {
+		c.stderrCh <- fmt.Sprintf("%s", err)
+		c.stdoutCh <- fmt.Sprintf("%s", "")
+	}
+
+	secs := time.Since(start).Seconds()
+
+	if err := c.CmdToRun.Wait(); err != nil {
+		c.stderrCh <- fmt.Sprintf("\r--> ERR (%.2fs): %s\n%s\n%s", secs, c.CmdToShow, err, slurpErr)
+		c.stdoutCh <- fmt.Sprintf("%s", "")
+		return
+	}
+
+	secs = time.Since(start).Seconds()
+
+	c.stderrCh <- fmt.Sprintf("\r--> OK (%.2fs): %s\n%s", secs, c.CmdToShow, slurpErr)
+	c.stdoutCh <- fmt.Sprintf("%s", slurpOut)
 }
 
 // readCommands reads in commands.

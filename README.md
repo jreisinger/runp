@@ -20,22 +20,22 @@ You can use shell variables in the commands. Commands have to be separated by ne
 ### Run test commands (file)
 
 ```
-$ runp commands/test.txt
---> ERR (0.00s): /bin/sh -c "blah"
-/bin/sh: 1: blah: not found
+$ ./runp commands/test.txt > /dev/null
+--> OK (0.01s): /bin/sh -c "ls /Users/reisinge/github/runp # 'PWD' shell variable is used here"
+--> ERR (0.01s): /bin/sh -c "blah"
 exit status 127
---> OK (0.00s): /bin/sh -c "ls /home/reisinge/github/runp # 'PWD' shell variable is used here"
---> OK (3.00s): /bin/sh -c "sleep 3"
---> OK (5.00s): /bin/sh -c "sleep 5"
---> OK (9.01s): /bin/sh -c "sleep 9"
+/bin/sh: blah: command not found
+--> OK (3.02s): /bin/sh -c "sleep 3"
+--> OK (5.02s): /bin/sh -c "sleep 5"
+--> OK (9.02s): /bin/sh -c "sleep 9"
 ```
 
-Running all the commands took 9.01 seconds. As opposed to the sum of all times in case the commands ran sequentially. If the command exits with 0 runp prints `OK`. Otherwise it prints `ERR` (in red) and STDERR. If you want to see also STDOUT use the `-v` switch.
+Running all the commands took 9.02 seconds. As opposed to the sum of all times in case the commands ran sequentially.
 
 ### Get directories' sizes (stdin)
 
 ```
-$ echo -e "/home\n/etc\n/tmp\n/data/backup\n/data/public" | sudo runp -v -p 'du -sh'
+$ echo -e "/home\n/etc\n/tmp\n/data/backup\n/data/public" | sudo runp -p 'du -sh'
 --> OK (0.04s): /bin/sh -c "du -sh /tmp"
 472K    /tmp
 --> OK (0.09s): /bin/sh -c "du -sh /etc"
@@ -56,8 +56,8 @@ query='jupiter'
 desc='planet'
 type='image'
 curl -s "$base?q=$query&description=$desc&media_type=$type" | \
-jq -r .collection.items[].href | head -50 | xargs curl -s $url | jq -r .[] | grep large | \
-runp -p 'curl -L -O'
+jq -r .collection.items[].href | head -50 | runp -p 'curl -s' | jq -r .[] | grep large | \
+runp -p 'curl -s -L -O'
 ```
 
 ## Development
@@ -66,7 +66,6 @@ Prep:
 
 ```
 export GOPATH=`pwd`
-go get -u github.com/fatih/color
 ```
 
 Test:

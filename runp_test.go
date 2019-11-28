@@ -6,13 +6,13 @@ import (
 )
 
 func TestCommandPrepare(t *testing.T) {
-	verbose := false
 	noshell := false
-	ch := make(chan string)
+	stderrChan := make(chan string)
+	stdoutChan := make(chan string)
 
 	// empty command
 	cmd := ""
-	c := Command{CmdString: cmd, Channel: ch, Verbose: verbose, NoShell: noshell}
+	c := Command{CmdString: cmd, stdoutCh: stdoutChan, stderrCh: stderrChan, NoShell: noshell}
 	c.Prepare()
 	if c.CmdString != "" {
 		t.Fatalf("CmdString is not empty: %v", c.CmdString)
@@ -23,7 +23,7 @@ func TestCommandPrepare(t *testing.T) {
 
 	// basic command
 	cmd = "ls -l"
-	c = Command{CmdString: cmd, Channel: ch, Verbose: verbose, NoShell: noshell}
+	c = Command{CmdString: cmd, stdoutCh: stdoutChan, stderrCh: stderrChan, NoShell: noshell}
 	c.Prepare()
 	if c.CmdString != "ls -l" {
 		t.Fatalf("CmdString is wrong")
