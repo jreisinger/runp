@@ -1,7 +1,7 @@
 test:
 	GO111MODULE=on go test ./...
 
-install: test $(PLATFORMS)
+install: test
 	GO111MODULE=on go install
 
 PLATFORMS := linux/amd64 darwin/amd64 linux/arm
