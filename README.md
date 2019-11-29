@@ -60,6 +60,12 @@ jq -r .collection.items[].href | head -50 | runp -p 'curl -s' | jq -r .[] | grep
 runp -p 'curl -s -L -O'
 ```
 
+### Compress images
+
+```
+find -iname '*.jpg' | runp -p 'gzip --best'
+```
+
 ## Development
 
 Prep:
