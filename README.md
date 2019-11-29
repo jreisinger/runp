@@ -68,23 +68,14 @@ find -iname '*.jpg' | runp -p 'gzip --best'
 
 ## Development
 
-Prep (do once):
+Test and build (cross-compile):
 
 ```
-#export GOPATH=`pwd`
-go mod init github.com/jreisinger/runp
+make release
 ```
 
-Test:
+Install:
 
 ```
-go test
-```
-
-Build (for multiple systems and architectures):
-
-```
-./go-cross-compile.py runp.go
-ln -sf runp-$SYS-$ARCH runp
-./runp
+make install
 ```
