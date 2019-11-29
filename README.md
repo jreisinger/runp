@@ -68,10 +68,11 @@ find -iname '*.jpg' | runp -p 'gzip --best'
 
 ## Development
 
-Prep:
+Prep (do once):
 
 ```
-export GOPATH=`pwd`
+#export GOPATH=`pwd`
+go mod init github.com/jreisinger/runp
 ```
 
 Test:
