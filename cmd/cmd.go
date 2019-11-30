@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/jreisinger/runp/pkg/util"
@@ -15,12 +16,13 @@ import (
 
 // Command represents a command.
 type Command struct {
-	CmdString string
-	CmdToShow string
-	CmdToRun  *exec.Cmd
-	StdoutCh  chan<- string
-	StderrCh  chan<- string
-	NoShell   bool
+	CmdString  string
+	CmdToShow  string
+	CmdToRun   *exec.Cmd
+	StdoutCh   chan<- string
+	StderrCh   chan<- string
+	ExitCodeCh chan<- int8
+	NoShell    bool
 }
 
 // Prepare prepares a command to be run.
@@ -37,7 +39,7 @@ func (c *Command) Prepare() {
 	}
 }
 
-// Run runs a command.
+// Run runs a command and writes its stdout, stderr and exit code to corresponding channels.
 func (c Command) Run() {
 	stderr, err := c.CmdToRun.StderrPipe()
 	if err != nil {
@@ -74,8 +76,16 @@ func (c Command) Run() {
 	secs := time.Since(start).Seconds()
 
 	if err := c.CmdToRun.Wait(); err != nil {
+
 		c.StderrCh <- fmt.Sprintf("\r--> ERR (%.2fs): %s\n%s\n%s", secs, c.CmdToShow, err, slurpErr)
 		c.StdoutCh <- fmt.Sprintf("%s", "")
+
+		// Did the command return a non-zero exit code?
+		if exitError, ok := err.(*exec.ExitError); ok {
+			waitStatus := exitError.Sys().(syscall.WaitStatus)
+			c.ExitCodeCh <- int8(waitStatus.ExitStatus())
+		}
+
 		return
 	}
 
@@ -83,6 +93,7 @@ func (c Command) Run() {
 
 	c.StderrCh <- fmt.Sprintf("\r--> OK (%.2fs): %s\n%s", secs, c.CmdToShow, slurpErr)
 	c.StdoutCh <- fmt.Sprintf("%s", slurpOut)
+	c.ExitCodeCh <- int8(0)
 }
 
 // ReadCommands reads in commands.

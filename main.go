@@ -27,7 +27,7 @@ func main() { // main itself runs in a goroutine
 	flag.Parse()
 
 	if *version {
-		fmt.Printf("runp %s\n", "v2.0.2")
+		fmt.Printf("runp %s\n", "v2.1.2")
 		os.Exit(0)
 	}
 
@@ -60,6 +60,7 @@ func main() { // main itself runs in a goroutine
 
 	stderrChan := make(chan string)
 	stdoutChan := make(chan string)
+	exitCodeChan := make(chan int8)
 
 	go util.ProgressBar()
 	for _, command := range cmds {
@@ -69,14 +70,20 @@ func main() { // main itself runs in a goroutine
 		if *suffix != "" {
 			command = command + " " + *suffix
 		}
-		c := cmd.Command{CmdString: command, StdoutCh: stdoutChan, StderrCh: stderrChan, NoShell: *noshell}
+		c := cmd.Command{CmdString: command, StdoutCh: stdoutChan, StderrCh: stderrChan, ExitCodeCh: exitCodeChan, NoShell: *noshell}
 		c.Prepare()
 		go c.Run()
 	}
 
+	var exitCodesSum int
+
 	for range cmds {
 		fmt.Fprint(os.Stderr, <-stderrChan)
 		fmt.Fprint(os.Stdout, <-stdoutChan)
+		exitCodesSum += int(<-exitCodeChan)
 	}
 
+	if exitCodesSum > 0 {
+		os.Exit(1)
+	}
 }
