@@ -30,7 +30,7 @@ exit status 127
 --> OK (9.02s): /bin/sh -c "sleep 9"
 ```
 
-Running all the commands took only 9.02 seconds as opposed to the sum of all times.
+Running all the commands took only 9.02 seconds as opposed to the sum of all times. We suppressed the printing of commands' stdout.
 
 ### Get directories' sizes (read from stdin)
 
@@ -43,7 +43,7 @@ $ echo -e "/home\n/etc\n/tmp\n/data/backup\n/data/public" | sudo runp -n -p 'du 
 292G	/data/backup
 ```
 
-We surpressed the printing of progress bar and info about command's execution (OK/ERR, run time, command to run) by discarding stderr.
+We suppressed the printing of progress bar and info about command's  execution (OK/ERR, run time, command to run) by discarding stderr.
 
 ### Get Jupiter images from NASA
 
