@@ -35,18 +35,15 @@ Running all the commands took only 9.02 seconds as opposed to the sum of all tim
 ### Get directories' sizes (read from stdin)
 
 ```
-$ echo -e "/home\n/etc\n/tmp\n/data/backup\n/data/public" | sudo runp -n -p 'du -sh'
---> OK (0.02s): du -sh /tmp
-476K	/tmp
---> OK (0.03s): du -sh /etc
+$ echo -e "/home\n/etc\n/tmp\n/data/backup\n/data/public" | sudo runp -n -p 'du -sh' 2> /dev/null 
+4.7M	/tmp
 7.1M	/etc
---> OK (0.33s): du -sh /home
-933M	/home
---> OK (0.74s): du -sh /data/public
+943M	/home
 416G	/data/public
---> OK (2.55s): du -sh /data/backup
 292G	/data/backup
 ```
+
+We surpressed the printing of progress bar and info about command's execution (OK/ERR, run time, command to run) by discarding stderr.
 
 ### Get Jupiter images from NASA
 
