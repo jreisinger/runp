@@ -1,23 +1,23 @@
 ## About
 
-`runp` runs shell commands in parallel (or concurrently). It's useful when you want to run multiple shell commands at once to save time. It's somehow similar to the GNU [parallel](https://www.gnu.org/software/parallel/) tool.
+`runp` is a command line tool that runs (shell) commands in parallel or concurrently. It's useful when you want to run multiple commands at once to save time. It's somehow similar to the GNU [parallel](https://www.gnu.org/software/parallel/) tool.
 
 ## Installation
 
-Download the latest [release](https://github.com/jreisinger/runp/releases) to your `bin` folder and make it executable:
+Download the latest [release](https://github.com/jreisinger/runp/releases) to your `bin` folder (or some other folder on your `PATH`) and make it executable:
 
 ```
 export SYS=linux  # darwin
 export ARCH=amd64 # arm
-curl --location https://github.com/jreisinger/runp/releases/latest/download/runp-$SYS-$ARCH \
---output ~/bin/runp && chmod u+x ~/bin/runp
+curl -L https://github.com/jreisinger/runp/releases/latest/download/runp-$SYS-$ARCH -O ~/bin/runp
+chmod u+x ~/bin/runp
 ```
 
 ## Usage examples
 
 You can use shell variables in the commands. Commands have to be separated by newlines. Empty lines and comments are ignored.
 
-### Run test commands (file)
+### Run some test commands (read from a file)
 
 ```
 $ runp commands/test.txt > /dev/null
@@ -30,9 +30,9 @@ exit status 127
 --> OK (9.02s): /bin/sh -c "sleep 9"
 ```
 
-Running all the commands took 9.02 seconds. As opposed to the sum of all times in case the commands ran sequentially.
+Running all the commands took only 9.02 seconds as opposed to the sum of all times.
 
-### Get directories' sizes (stdin)
+### Get directories' sizes (read from stdin)
 
 ```
 $ echo -e "/home\n/etc\n/tmp\n/data/backup\n/data/public" | sudo runp -n -p 'du -sh'
@@ -48,7 +48,7 @@ $ echo -e "/home\n/etc\n/tmp\n/data/backup\n/data/public" | sudo runp -n -p 'du 
 292G	/data/backup
 ```
 
-### Get some NASA images (stdin)
+### Get Jupiter images from NASA
 
 ```
 base='https://images-api.nasa.gov/search'
