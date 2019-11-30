@@ -68,14 +68,20 @@ find -iname '*.jpg' | runp -p 'gzip --best'
 
 ## Development
 
-Test and build (cross-compile):
+Test:
 
 ```
-make release
+make test
 ```
 
-Install:
+Test and install:
 
 ```
 make install
+```
+
+Test and build (cross-compile for multiple platforms):
+
+```
+make release
 ```
