@@ -9,7 +9,7 @@ Download the latest [release](https://github.com/jreisinger/runp/releases) to yo
 ```
 export SYS=linux  # darwin
 export ARCH=amd64 # arm
-curl -L https://github.com/jreisinger/runp/releases/latest/download/runp-$SYS-$ARCH -O ~/bin/runp
+curl -L https://github.com/jreisinger/runp/releases/latest/download/runp-$SYS-$ARCH -o ~/bin/runp
 chmod u+x ~/bin/runp
 ```
 
