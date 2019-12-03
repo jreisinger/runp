@@ -19,34 +19,6 @@ You can use shell variables in the commands. Commands have to be separated by ne
 
 `runp` exit status is 0 if all commands exit with 0 (OK). stdin and stderr works as usual.
 
-### Run some test commands (read from a file)
-
-```
-$ runp commands/test.txt > /dev/null
---> OK (0.01s): /bin/sh -c "ls /Users/reisinge/github/runp # 'PWD' shell variable is used here"
---> ERR (0.01s): /bin/sh -c "blah"
-exit status 127
-/bin/sh: blah: command not found
---> OK (3.02s): /bin/sh -c "sleep 3"
---> OK (5.02s): /bin/sh -c "sleep 5"
---> OK (9.02s): /bin/sh -c "sleep 9"
-```
-
-Running all the commands took only 9.02 seconds as opposed to the sum of all times. We suppressed the printing of commands' stdout.
-
-### Get directories' sizes (read from stdin)
-
-```
-$ echo -e "/home\n/etc\n/tmp\n/data/backup\n/data/public" | sudo runp -n -p 'du -sh' 2> /dev/null 
-4.7M	/tmp
-7.1M	/etc
-943M	/home
-416G	/data/public
-292G	/data/backup
-```
-
-We suppressed the printing of progress bar and info about command's  execution (OK/ERR, run time, command to run) by discarding stderr.
-
 ### Ping several hosts (read from stdin)
 
 ```
@@ -59,7 +31,33 @@ localhost
 --> OK (1.07s): /bin/sh -c "ping -c 2 -W 2 8.8.8.8 # Google"
 ```
 
-Press `Ctrl-D` when done entering the host names.
+Press `Ctrl-D` when done entering the host names. Running all the commands took only 1.07 second as opposed to the sum of all times. We suppressed the printing of commands' stdout by redirecting stdout to `/dev/null`.
+
+### Get directories' sizes (read from stdin)
+
+```
+$ echo -e "/home\n/etc\n/tmp\n/data/backup\n/data/public" | sudo runp -n -p 'du -sh' 2> /dev/null 
+4.7M	/tmp
+7.1M	/etc
+943M	/home
+416G	/data/public
+292G	/data/backup
+```
+
+We suppressed the printing of progress bar and info about command's execution (OK/ERR, run time, command to run) by discarding stderr.
+
+### Run some test commands (read from a file)
+
+```
+$ runp commands/test.txt > /dev/null
+--> OK (0.01s): /bin/sh -c "ls /Users/reisinge/github/runp # 'PWD' shell variable is used here"
+--> ERR (0.01s): /bin/sh -c "blah"
+exit status 127
+/bin/sh: blah: command not found
+--> OK (3.02s): /bin/sh -c "sleep 3"
+--> OK (5.02s): /bin/sh -c "sleep 5"
+--> OK (9.02s): /bin/sh -c "sleep 9"
+```
 
 ### Get Jupiter images from NASA
 
