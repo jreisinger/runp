@@ -17,7 +17,7 @@ chmod u+x ~/bin/runp
 
 You can use shell variables in the commands. Commands have to be separated by newlines. Empty lines and comments are ignored.
 
-runp exit status is 0 if all commands exit with 0 (OK). stdin and stderr works as usual.
+`runp` exit status is 0 if all commands exit with 0 (OK). stdin and stderr works as usual.
 
 ### Run some test commands (read from a file)
 
@@ -52,11 +52,11 @@ We suppressed the printing of progress bar and info about command's  execution (
 ```
 $ runp -p 'ping -c 2 -W 2' > /dev/null
 localhost
-1.1.1.1
-8.8.8.8
---> OK (3.33s): /bin/sh -c "ping -c 2 -W 2 localhost"
---> OK (3.34s): /bin/sh -c "ping -c 2 -W 2 1.1.1.1"
---> OK (3.34s): /bin/sh -c "ping -c 2 -W 2 8.8.8.8"
+1.1.1.1 # Clouflare
+8.8.8.8 # Google
+--> OK (1.06s): /bin/sh -c "ping -c 2 -W 2 localhost"
+--> OK (1.07s): /bin/sh -c "ping -c 2 -W 2 1.1.1.1 # Clouflare"
+--> OK (1.07s): /bin/sh -c "ping -c 2 -W 2 8.8.8.8 # Google"
 ```
 
 Press `Ctrl-D` when done entering the host names.
