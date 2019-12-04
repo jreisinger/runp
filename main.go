@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/jreisinger/runp/cmd"
-	"github.com/jreisinger/runp/pkg/util"
+	"github.com/jreisinger/runp/util"
 )
 
 func usage() {
