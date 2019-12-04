@@ -34,7 +34,7 @@ We suppressed the printing of commands' stdout by redirecting stdout to `/dev/nu
 ### Get directories' sizes (read from stdin)
 
 ```
-echo -e "$HOME\n/etc\n/tmp" | sudo runp -n -p 'du -sh' 2> /dev/null 
+echo -e "$HOME\n/etc\n/tmp" | runp -n -p 'du -sh' 2> /dev/null 
 ```
 
 We suppressed the printing of progress bar and info about command's execution (OK/ERR, run time, command to run) by redirecting stderr to `/dev/null`.
