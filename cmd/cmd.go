@@ -96,8 +96,49 @@ func (c Command) Run() {
 	c.ExitCodeCh <- int8(0)
 }
 
-// ReadCommands reads in commands.
-func ReadCommands(file *os.File) ([]string, error) {
+// ReadCommands returns commands to execute.
+func ReadCommands(args []string) []string {
+
+	if len(args) == 0 {
+		return readCommandsFromStdin()
+	}
+
+	var cmds []string
+	for _, arg := range args {
+		c := readCommandsFromFile(arg)
+		cmds = append(cmds, c...)
+	}
+	return cmds
+}
+
+func readCommandsFromStdin() []string {
+
+	cmds, err := readCommands(os.Stdin)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
+	}
+	return cmds
+}
+
+func readCommandsFromFile(fileName string) []string {
+
+	file, err := os.Open(fileName)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		return nil
+	}
+	defer file.Close()
+
+	cmds, err := readCommands(file)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
+	}
+	return cmds
+}
+
+func readCommands(file *os.File) ([]string, error) {
 	var cmds []string
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {

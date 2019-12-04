@@ -27,11 +27,11 @@ func main() { // main itself runs in a goroutine
 	flag.Parse()
 
 	if *version {
-		fmt.Printf("runp %s\n", "v2.1.2")
+		fmt.Printf("runp %s\n", "v2.1.3")
 		os.Exit(0)
 	}
 
-	cmds := readCommands(flag.Args())
+	cmds := cmd.ReadCommands(flag.Args())
 
 	stderrChan := make(chan string)
 	stdoutChan := make(chan string)
@@ -61,45 +61,4 @@ func main() { // main itself runs in a goroutine
 	if exitCodesSum > 0 {
 		os.Exit(1)
 	}
-}
-
-func readCommands(args []string) []string {
-
-	if len(args) == 0 {
-		return readCommandsFromStdin()
-	}
-
-	var cmds []string
-	for _, arg := range args {
-		c := readCommandsFromFile(arg)
-		cmds = append(cmds, c...)
-	}
-	return cmds
-}
-
-func readCommandsFromStdin() []string {
-
-	cmds, err := cmd.ReadCommands(os.Stdin)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		os.Exit(1)
-	}
-	return cmds
-}
-
-func readCommandsFromFile(fileName string) []string {
-
-	file, err := os.Open(fileName)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		return nil
-	}
-	defer file.Close()
-
-	cmds, err := cmd.ReadCommands(file)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		os.Exit(1)
-	}
-	return cmds
 }

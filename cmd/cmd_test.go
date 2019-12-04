@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"os"
 	"testing"
 )
 
@@ -30,15 +29,5 @@ func TestCommandPrepare(t *testing.T) {
 	}
 	if c.CmdToShow != "/bin/sh -c \"ls -l\"" {
 		t.Fatalf("CmdToShow is wrong")
-	}
-}
-
-func TestReadCommands(t *testing.T) {
-	f, _ := os.Open("dommands/test.txt")
-	cmds, _ := ReadCommands(f)
-	for _, c := range cmds {
-		if c == "" {
-			t.Fatalf("Empty line not ignored")
-		}
 	}
 }
