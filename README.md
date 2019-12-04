@@ -15,9 +15,22 @@ chmod u+x ~/bin/runp
 
 ## Usage examples
 
-Commands can be read from stdin or from file(s) and must be separated by newlines. Comments and empty lines are ignored.
+Commands can be read from file(s) or stdin and must be separated by newlines. Comments and empty lines are ignored.
 
 You can use shell variables in the commands. `runp` exit status is 0 if all commands exit with 0 (OK). stdin and stderr work as usual. 
+
+### Run some test commands (read from file)
+
+```
+cat << EOF > /tmp/commands.txt
+sleep 5
+sleep 3
+blah     # this will fail
+ls $PWD  # 'PWD' shell variable is used here
+EOF
+
+runp /tmp/commands.txt > /dev/null
+```
 
 ### Ping several hosts (read from stdin)
 
@@ -38,24 +51,6 @@ echo -e "$HOME\n/etc\n/tmp" | runp -n -p 'du -sh' 2> /dev/null
 ```
 
 We suppressed the printing of progress bar and info about command's execution (OK/ERR, run time, command to run) by redirecting stderr to `/dev/null`.
-
-### Run some test commands (read from file)
-
-```
-cat << EOF > /tmp/commands.txt
-sleep 3
-sleep 5
-
-blah
-
-# comment
-sleep 9
-
-ls $PWD # 'PWD' shell variable is used here
-EOF
-
-runp /tmp/commands.txt > /dev/null
-```
 
 ### Get Jupiter images from NASA
 
