@@ -73,7 +73,7 @@ runp -p 'curl -s -L -O'
 ### Compress images
 
 ```
-find -iname '*.jpg' | runp -p 'gzip --best'
+find . -iname '*.jpg' | runp -p 'gzip --best'
 ```
 
 ## Development
