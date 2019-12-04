@@ -17,7 +17,7 @@ chmod u+x ~/bin/runp
 
 Commands can be read from stdin or from file(s) and must be separated by newlines. Comments and empty lines are ignored.
 
-You can use shell variables in the commands. `runp` exit status is 0 if all commands exit with 0 (OK). stdin and stderr works as usual. 
+You can use shell variables in the commands. `runp` exit status is 0 if all commands exit with 0 (OK). stdin and stderr work as usual. 
 
 ### Ping several hosts (read from stdin)
 
@@ -38,7 +38,7 @@ We suppressed the printing of commands' stdout by redirecting stdout to `/dev/nu
 echo -e "$HOME\n/etc\n/tmp" | sudo runp -n -p 'du -sh' 2> /dev/null 
 ```
 
-We suppressed the printing of progress bar and info about command's execution (OK/ERR, run time, command to run) by discarding stderr.
+We suppressed the printing of progress bar and info about command's execution (OK/ERR, run time, command to run) by redirecting stderr to `/dev/null`.
 
 ### Run some test commands (read from file)
 
