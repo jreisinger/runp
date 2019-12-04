@@ -11,7 +11,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/jreisinger/runp/pkg/util"
+	"github.com/jreisinger/runp/util"
 )
 
 // Command represents a command.
