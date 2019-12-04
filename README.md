@@ -70,6 +70,13 @@ runp -p 'curl -s -L -O'
 find . -iname '*.jpg' | runp -p 'gzip --best'
 ```
 
+### Measure HTTP request and response time
+
+```
+export CURL="curl -w 'time_total:  %{time_total}\n' -o /dev/null -s https://golang.org/"
+perl -E 'for (1..100) { say $ENV{CURL} }' | runp 2> /dev/null
+```
+
 ## Development
 
 Test and install:
