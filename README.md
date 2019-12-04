@@ -79,12 +79,6 @@ find -iname '*.jpg' | runp -p 'gzip --best'
 
 ## Development
 
-Test:
-
-```
-make test
-```
-
 Test and install:
 
 ```
