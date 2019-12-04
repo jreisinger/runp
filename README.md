@@ -17,11 +17,16 @@ chmod u+x ~/bin/runp
 
 Commands can be read from file(s) or stdin and must be separated by newlines. Comments and empty lines are ignored.
 
-You can use shell variables in the commands. `runp` exit status is 0 if all commands exit with 0 (OK). stdin and stderr work as usual. `runp` prints a progress bar and info about command's execution (OK/ERR, run time, command to run) to stderr.
+You can use shell variables in the commands.
+
+`runp` exit status is 0 if all commands exit with 0 (OK).
+
+`runp` prints a progress bar and info about command's execution (OK/ERR, run time, command to run) to stderr. Otherwise stdin and stderr works as you would expect. 
 
 ### Run some test commands (read from file)
 
 ```
+# Create a file containing commands to run in parallel.
 cat << EOF > /tmp/test-commands.txt
 sleep 5
 sleep 3
@@ -29,6 +34,7 @@ blah     # this will fail
 ls $PWD  # 'PWD' shell variable is used here
 EOF
 
+# Run commands from the file.
 runp /tmp/test-commands.txt > /dev/null
 ```
 
