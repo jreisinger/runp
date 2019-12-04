@@ -26,9 +26,7 @@ runp -p 'ping -c 2 -W 2' > /dev/null
 localhost
 1.1.1.1 # Cloudflare
 8.8.8.8
-
 # Press `Ctrl-D` when done entering the host names.
-
 ```
 
 We suppressed the printing of commands' stdout by redirecting stdout to `/dev/null`.
