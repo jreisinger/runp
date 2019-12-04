@@ -24,8 +24,9 @@ You can use shell variables in the commands. `runp` exit status is 0 if all comm
 ```
 runp -p 'ping -c 2 -W 2' > /dev/null
 localhost
-1.1.1.1 # Clouflare
+1.1.1.1 # Cloudflare
 8.8.8.8
+
 # Press `Ctrl-D` when done entering the host names.
 
 ```
