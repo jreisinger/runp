@@ -23,20 +23,24 @@ You can use shell variables in the commands. Commands have to be separated by ne
 
 ```
 $ runp -p 'ping -c 2 -W 2' > /dev/null
+
 localhost
 1.1.1.1 # Clouflare
 8.8.8.8 # Google
+
+# Press `Ctrl-D` when done entering the host names.
+
 --> OK (1.06s): /bin/sh -c "ping -c 2 -W 2 localhost"
 --> OK (1.07s): /bin/sh -c "ping -c 2 -W 2 1.1.1.1 # Clouflare"
 --> OK (1.07s): /bin/sh -c "ping -c 2 -W 2 8.8.8.8 # Google"
 ```
 
-Press `Ctrl-D` when done entering the host names. Running all the commands took only 1.07 second as opposed to the sum of all times. We suppressed the printing of commands' stdout by redirecting stdout to `/dev/null`.
+Running all the commands took only 1.07 second as opposed to the sum of all times. We suppressed the printing of commands' stdout by redirecting stdout to `/dev/null`.
 
 ### Get directories' sizes (read from stdin)
 
 ```
-$ echo -e "/home\n/etc\n/tmp\n/data/backup\n/data/public" | sudo runp -n -p 'du -sh' 2> /dev/null 
+$ echo -e "$HOME\n/etc\n/tmp" | sudo runp -n -p 'du -sh' 2> /dev/null 
 4.7M	/tmp
 7.1M	/etc
 943M	/home
