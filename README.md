@@ -32,18 +32,6 @@ EOF
 runp /tmp/commands.txt > /dev/null
 ```
 
-### Ping several hosts (read from stdin)
-
-```
-runp -p 'ping -c 2 -W 2' > /dev/null
-localhost
-1.1.1.1 # Cloudflare
-8.8.8.8
-# Press `Ctrl-D` when done entering the host names.
-```
-
-We suppressed the printing of commands' stdout by redirecting stdout to `/dev/null`.
-
 ### Get directories' sizes (read from stdin)
 
 ```
@@ -51,6 +39,18 @@ echo -e "$HOME\n/etc\n/tmp" | runp -n -p 'du -sh' 2> /dev/null
 ```
 
 We suppressed the printing of progress bar and info about command's execution (OK/ERR, run time, command to run) by redirecting stderr to `/dev/null`.
+
+### Ping several hosts and see packet loss (read from stdin)
+
+```
+runp -p 'ping -c 5 -W 2' -s '| grep loss'
+localhost
+1.1.1.1
+8.8.8.8
+# Press `Ctrl-D` when done entering the hosts
+```
+
+We used `-p` and `-s` to add prefix and suffix strings to the commands (hosts in this case).
 
 ### Get Jupiter images from NASA
 
