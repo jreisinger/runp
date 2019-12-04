@@ -15,52 +15,47 @@ chmod u+x ~/bin/runp
 
 ## Usage examples
 
-You can use shell variables in the commands. Commands have to be separated by newlines. Empty lines and comments are ignored.
+Commands can be read from stdin or from file(s) and must be separated by newlines. Comments and empty lines are ignored.
 
-`runp` exit status is 0 if all commands exit with 0 (OK). stdin and stderr works as usual.
+You can use shell variables in the commands. `runp` exit status is 0 if all commands exit with 0 (OK). stdin and stderr works as usual. 
 
 ### Ping several hosts (read from stdin)
 
 ```
-$ runp -p 'ping -c 2 -W 2' > /dev/null
-
+runp -p 'ping -c 2 -W 2' > /dev/null
 localhost
 1.1.1.1 # Clouflare
-8.8.8.8 # Google
-
+8.8.8.8
 # Press `Ctrl-D` when done entering the host names.
 
---> OK (1.06s): /bin/sh -c "ping -c 2 -W 2 localhost"
---> OK (1.07s): /bin/sh -c "ping -c 2 -W 2 1.1.1.1 # Clouflare"
---> OK (1.07s): /bin/sh -c "ping -c 2 -W 2 8.8.8.8 # Google"
 ```
 
-Running all the commands took only 1.07 second as opposed to the sum of all times. We suppressed the printing of commands' stdout by redirecting stdout to `/dev/null`.
+We suppressed the printing of commands' stdout by redirecting stdout to `/dev/null`.
 
 ### Get directories' sizes (read from stdin)
 
 ```
-$ echo -e "$HOME\n/etc\n/tmp" | sudo runp -n -p 'du -sh' 2> /dev/null 
-4.7M	/tmp
-7.1M	/etc
-943M	/home
-416G	/data/public
-292G	/data/backup
+echo -e "$HOME\n/etc\n/tmp" | sudo runp -n -p 'du -sh' 2> /dev/null 
 ```
 
 We suppressed the printing of progress bar and info about command's execution (OK/ERR, run time, command to run) by discarding stderr.
 
-### Run some test commands (read from a file)
+### Run some test commands (read from file)
 
 ```
-$ runp commands/test.txt > /dev/null
---> OK (0.01s): /bin/sh -c "ls /Users/reisinge/github/runp # 'PWD' shell variable is used here"
---> ERR (0.01s): /bin/sh -c "blah"
-exit status 127
-/bin/sh: blah: command not found
---> OK (3.02s): /bin/sh -c "sleep 3"
---> OK (5.02s): /bin/sh -c "sleep 5"
---> OK (9.02s): /bin/sh -c "sleep 9"
+cat << EOF > /tmp/commands.txt
+sleep 3
+sleep 5
+
+blah
+
+# comment
+sleep 9
+
+ls $PWD # 'PWD' shell variable is used here
+EOF
+
+runp /tmp/commands.txt > /dev/null
 ```
 
 ### Get Jupiter images from NASA
