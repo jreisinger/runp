@@ -1,6 +1,6 @@
 ## About
 
-`runp` is a command line tool that runs (shell) commands in parallel or concurrently. It's useful when you want to run multiple commands at once to save time. It's somehow similar to the GNU [parallel](https://www.gnu.org/software/parallel/) tool.
+`runp` is a simple command line tool that runs (shell) commands in parallel. It's useful when you want to run multiple commands at once to save time. It's a single binary. It's been tested on Linux and MacOS (darwin).
 
 ## Installation
 
