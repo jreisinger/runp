@@ -11,7 +11,7 @@ import (
 
 func usage() {
 	desc := `Run commands from file(s) or stdin in parallel. Commands must be separated by
-newlines. Comments and empty lines are ignored.`
+newlines. Comments and empty lines are ignored. https://github.com/jreisinger/runp`
 	fmt.Fprintf(os.Stderr, "%s\n\nUsage: %s [options] [file ...]\n", desc, os.Args[0])
 	flag.PrintDefaults()
 }
