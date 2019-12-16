@@ -87,7 +87,7 @@ find . -iname '*.jpg' | runp -p 'gzip --best'
 
 ```
 export CURL="curl -w 'time_total:  %{time_total}\n' -o /dev/null -s https://golang.org/"
-perl -E 'for (1..10) { say $ENV{CURL} }' | runp 2> /dev/null
+perl -E 'for (1..10) { say $ENV{CURL} }' | runp -q
 ```
 
 ### Find open TCP ports
