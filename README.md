@@ -71,7 +71,7 @@ query='jupiter'
 desc='planet'
 type='image'
 curl -s "$base?q=$query&description=$desc&media_type=$type" | \
-jq -r .collection.items[].href | head -50 | runp -p 'curl -s' | jq -r .[] | grep large | \
+jq -r .collection.items[].href | runp -p 'curl -s' | jq -r .[] | grep large | \
 runp -p 'curl -s -L -O'
 ```
 
