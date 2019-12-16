@@ -15,7 +15,7 @@ chmod u+x ~/bin/runp
 
 ## Description and Usage examples
 
-Commands can be read from file(s) or stdin and must be separated by newlines. Comments and empty lines are ignored.
+Commands (or parts of them) can be read from files or stdin and must be separated by newlines. Comments and empty lines are ignored.
 
 You can use shell variables in the commands.
 
