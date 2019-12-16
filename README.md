@@ -104,7 +104,7 @@ We used `-q` to suppress output from `runp` itself. Then we redirect stderr to s
 
 ## Development
 
-Test and install:
+Test and install (to `~/go/bin/`):
 
 ```
 make install
@@ -116,10 +116,12 @@ Test and build (cross-compile for multiple platforms):
 make release
 ```
 
-Working with tags:
+Working with GitHub releases:
+
+*NOTE*: don't forget to bump up the version in `main.go`!
 
 ```
-# List tags
+# List existing tags
 git tag
 
 # Add new tag
