@@ -115,3 +115,16 @@ Test and build (cross-compile for multiple platforms):
 ```
 make release
 ```
+
+Working with tags:
+
+```
+# List tags
+git tag
+# Add new tag
+git tag -a v2.1.3 -m "split code into packages, use modules, cleanup"
+# Push tags upstream
+git push origin --tags
+# Delete tag
+git tag -d v2.0.2
+```
