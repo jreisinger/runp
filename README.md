@@ -43,14 +43,6 @@ runp /tmp/test-commands.txt > /dev/null
 
 We suppressed the printing of commands' stdout by redirecting it to `/dev/null`.
 
-### Get directories' sizes (read from stdin)
-
-```
-echo -e "$HOME\n/etc\n/tmp" | runp -n -p 'du -sh' 2> /dev/null 
-```
-
-We suppressed the printing of `runp`'s progress bar and info about command's execution by redirecting stderr to `/dev/null`.
-
 ### Ping several hosts and see packet loss (read from stdin)
 
 ```
@@ -62,6 +54,14 @@ localhost
 ```
 
 We used `-p` and `-s` to add prefix and suffix strings to the commands (hosts in this case).
+
+### Get directories' sizes (read from stdin)
+
+```
+echo -e "$HOME\n/etc\n/tmp" | runp -q -p 'du -sh'
+```
+
+We suppressed the printing of `runp`'s progress bar and info about command's execution by using the `-q` flag.
 
 ### Get Jupiter images from NASA
 
