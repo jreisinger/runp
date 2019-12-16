@@ -121,10 +121,14 @@ Working with tags:
 ```
 # List tags
 git tag
+
 # Add new tag
 git tag -a v2.1.3 -m "split code into packages, use modules, cleanup"
-# Push tags upstream
+# Push tags to remote
 git push origin --tags
+
 # Delete tag
 git tag -d v2.0.2
+# Delete remote tag
+git push --delete origin v2.0.2
 ```
