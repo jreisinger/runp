@@ -7,8 +7,11 @@
 Download the latest [release](https://github.com/jreisinger/runp/releases) to your `bin` folder (or some other folder on your `PATH`) and make it executable:
 
 ```
-export SYS=linux  # darwin
-export ARCH=amd64 # arm
+# choose your system and architecture
+export SYS=linux  # or darwin
+export ARCH=amd64 # or arm
+
+# download an make executable
 curl -L https://github.com/jreisinger/runp/releases/latest/download/runp-$SYS-$ARCH -o ~/bin/runp
 chmod u+x ~/bin/runp
 ```
