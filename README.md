@@ -94,7 +94,7 @@ localhost 81
 127.0.0.1 443
 127.0.0.1 444
 localhost 22
-$ cat host-port.txt | ./runp-linux-arm -p 'netcat -v -w2 -z' -q 2>&1 | egrep 'open$'
+$ cat host-port.txt | runp -p 'netcat -v -w2 -z' -q 2>&1 | egrep 'open$'
 localhost [127.0.0.1] 443 (https) open
 localhost [127.0.0.1] 80 (http) open
 localhost [127.0.0.1] 22 (ssh) open
