@@ -24,6 +24,7 @@ func main() { // main itself runs in a goroutine
 	prefix := flag.String("p", "", "prefix to put in front of the commands")
 	suffix := flag.String("s", "", "suffix to put behind the commands")
 	goroutines := flag.Int("g", 10, "max number of commands (goroutines) to run in parallel")
+	quiet := flag.Bool("q", false, "be quiet")
 
 	flag.Parse()
 
@@ -44,7 +45,9 @@ func main() { // main itself runs in a goroutine
 		go cmd.Runner(commandChan)
 	}
 
-	go util.ProgressBar()
+	if !*quiet {
+		go util.ProgressBar()
+	}
 	for _, command := range cmds {
 		if *prefix != "" {
 			command = *prefix + " " + command
@@ -52,7 +55,7 @@ func main() { // main itself runs in a goroutine
 		if *suffix != "" {
 			command = command + " " + *suffix
 		}
-		c := cmd.Command{CmdString: command, StdoutCh: stdoutChan, StderrCh: stderrChan, ExitCodeCh: exitCodeChan, NoShell: *noshell}
+		c := cmd.Command{CmdString: command, StdoutCh: stdoutChan, StderrCh: stderrChan, ExitCodeCh: exitCodeChan, NoShell: *noshell, Quiet: *quiet}
 		go cmd.Dispatcher(&c, commandChan)
 	}
 

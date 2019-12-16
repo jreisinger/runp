@@ -23,6 +23,7 @@ type Command struct {
 	StderrCh   chan<- string
 	ExitCodeCh chan<- int8
 	NoShell    bool
+	Quiet      bool
 }
 
 // Prepare prepares a command to be run.
@@ -77,7 +78,12 @@ func (c *Command) Run() {
 
 	if err := c.CmdToRun.Wait(); err != nil {
 
-		c.StderrCh <- fmt.Sprintf("\r--> ERR (%.2fs): %s\n%s\n%s", secs, c.CmdToShow, err, slurpErr)
+		var toStderr string
+		if !c.Quiet {
+			toStderr += fmt.Sprintf("\r--> ERR (%.2fs): %s\n%s\n", secs, c.CmdToShow, err)
+		}
+		toStderr += fmt.Sprintf("%s", slurpErr)
+		c.StderrCh <- toStderr
 		c.StdoutCh <- fmt.Sprintf("%s", "")
 
 		// Did the command return a non-zero exit code?
@@ -91,7 +97,12 @@ func (c *Command) Run() {
 
 	secs = time.Since(start).Seconds()
 
-	c.StderrCh <- fmt.Sprintf("\r--> OK (%.2fs): %s\n%s", secs, c.CmdToShow, slurpErr)
+	var toStderr string
+	if !c.Quiet {
+		toStderr += fmt.Sprintf("\r--> OK (%.2fs): %s\n", secs, c.CmdToShow)
+	}
+	toStderr += fmt.Sprintf("%s", slurpErr)
+	c.StderrCh <- toStderr
 	c.StdoutCh <- fmt.Sprintf("%s", slurpOut)
 	c.ExitCodeCh <- int8(0)
 }
