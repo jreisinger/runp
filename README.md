@@ -83,11 +83,11 @@ If you want to see how much time you just saved add `-g 1` to both `runp` invoca
 find . -iname '*.jpg' | runp -p 'gzip --best'
 ```
 
-### Measure HTTP request and response time
+### Measure HTTP request + response time
 
 ```
 export CURL="curl -w 'time_total:  %{time_total}\n' -o /dev/null -s https://golang.org/"
-perl -E 'for (1..10) { say $ENV{CURL} }' | runp -q
+perl -wE 'for (1..10) { say $ENV{CURL} }' | runp -q # make 10 requests
 ```
 
 ### Find open TCP ports
