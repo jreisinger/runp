@@ -23,6 +23,7 @@ func main() { // main itself runs in a goroutine
 	version := flag.Bool("V", false, "print version")
 	prefix := flag.String("p", "", "prefix to put in front of the commands")
 	suffix := flag.String("s", "", "suffix to put behind the commands")
+	goroutines := flag.Int("g", 10, "max number of commands (goroutines) to run in parallel")
 
 	flag.Parse()
 
@@ -36,6 +37,12 @@ func main() { // main itself runs in a goroutine
 	stderrChan := make(chan string)
 	stdoutChan := make(chan string)
 	exitCodeChan := make(chan int8)
+	commandChan := make(chan *cmd.Command)
+
+	// Simple workload balancer does not run more than *goroutines gouroutines in parallel.
+	for i := 0; i < *goroutines; i++ {
+		go cmd.Runner(commandChan)
+	}
 
 	go util.ProgressBar()
 	for _, command := range cmds {
@@ -46,8 +53,7 @@ func main() { // main itself runs in a goroutine
 			command = command + " " + *suffix
 		}
 		c := cmd.Command{CmdString: command, StdoutCh: stdoutChan, StderrCh: stderrChan, ExitCodeCh: exitCodeChan, NoShell: *noshell}
-		c.Prepare()
-		go c.Run()
+		go cmd.Dispatcher(&c, commandChan)
 	}
 
 	var exitCodesSum int

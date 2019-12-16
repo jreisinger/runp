@@ -40,7 +40,7 @@ func (c *Command) Prepare() {
 }
 
 // Run runs a command and writes its stdout, stderr and exit code to corresponding channels.
-func (c Command) Run() {
+func (c *Command) Run() {
 	stderr, err := c.CmdToRun.StderrPipe()
 	if err != nil {
 		c.StderrCh <- fmt.Sprintf("creating stderr pipe for %s: %s\n", c.CmdToShow, err)
@@ -94,6 +94,20 @@ func (c Command) Run() {
 	c.StderrCh <- fmt.Sprintf("\r--> OK (%.2fs): %s\n%s", secs, c.CmdToShow, slurpErr)
 	c.StdoutCh <- fmt.Sprintf("%s", slurpOut)
 	c.ExitCodeCh <- int8(0)
+}
+
+// Dispatcher sends command down the commandChan. It's supposed to be run as a goroutine.
+func Dispatcher(command *Command, commandChan chan *Command) {
+	commandChan <- command
+}
+
+// Runner runs the command it gets from the commandChan. It's supposed to be run as a goroutine.
+func Runner(commandChan chan *Command) {
+	for {
+		cmd := <-commandChan
+		cmd.Prepare()
+		cmd.Run()
+	}
 }
 
 // ReadCommands returns commands to execute.
