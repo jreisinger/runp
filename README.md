@@ -2,7 +2,7 @@
 
 `runp` is a simple command line tool that runs (shell) commands in parallel. It's useful when you want to run multiple commands at once to save time. It's easy to install since it's a single binary. It's been tested on Linux (amd64 and arm) and MacOS/darwin (amd64).
 
-There's also a related blog [post](https://jreisinger.github.io/blog/posts/runp/) (with a movie! :-).
+There's also a related blog [post](https://jreisinger.blogspot.com/2019/12/runp-run-shell-commands-in-parallel.html) (with a movie! :-).
 
 ## Installation
 
