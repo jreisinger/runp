@@ -96,11 +96,14 @@ perl -wE 'for (1..10) { say $ENV{CURL} }' | runp -q # Make 10 requests
 
 ```
 cat << EOF > /tmp/host-port.txt
+localhost 22
 localhost 80
 localhost 81
 127.0.0.1 443
 127.0.0.1 444
-localhost 22
+scanme.nmap.org 22
+scanme.nmap.org 23
+scanme.nmap.org 443
 EOF
 
 cat /tmp/host-port.txt | runp -q -p 'netcat -v -w2 -z' 2>&1 | egrep '(succeeded!|open)$'
