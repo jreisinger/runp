@@ -9,11 +9,11 @@ There's also a related blog [post](https://jreisinger.github.io/blog2/posts/runp
 Download the latest [release](https://github.com/jreisinger/runp/releases) to your `bin` folder (or some other folder on your `PATH`) and make it executable:
 
 ```
-# choose your system and architecture
+# Choose your system and architecture.
 export SYS=linux  # or darwin
 export ARCH=amd64 # or arm
 
-# download and make executable
+# Download the binary and make it executable.
 curl -L https://github.com/jreisinger/runp/releases/latest/download/runp-$SYS-$ARCH -o ~/bin/runp
 chmod u+x ~/bin/runp
 ```
