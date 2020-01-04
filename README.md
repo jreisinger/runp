@@ -36,7 +36,7 @@ cat << EOF > /tmp/test-commands.txt
 sleep 5
 sleep 3
 blah     # this will fail
-ls $PWD  # 'PWD' shell variable is used here
+ls $PWD  # PWD shell variable is used here
 EOF
 
 # Run commands from the file.
