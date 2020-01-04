@@ -103,13 +103,13 @@ localhost 81
 localhost 22
 EOF
 
-cat /tmp/host-port.txt | runp -p 'netcat -v -w2 -z' -q 2>&1 | egrep '(succeeded!|open)$'
+cat /tmp/host-port.txt | runp -q -p 'netcat -v -w2 -z' 2>&1 | egrep '(succeeded!|open)$'
 localhost [127.0.0.1] 443 (https) open
 localhost [127.0.0.1] 80 (http) open
 localhost [127.0.0.1] 22 (ssh) open
 ```
 
-We used `-q` to suppress output from `runp` itself. Then we redirect stderr to stdout since netcat prints its messages to stderr. This way web can `grep` netcat's messages.
+We used `-q` to suppress output from `runp` itself. Then we redirect stderr to stdout since netcat prints its messages to stderr. This way we can `grep` netcat's messages.
 
 ## Development
 
