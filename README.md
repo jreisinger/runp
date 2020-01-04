@@ -48,7 +48,7 @@ We suppressed the printing of commands' stdout by redirecting it to `/dev/null`.
 ### Ping several hosts and see packet loss (read from stdin)
 
 ```
-runp -p 'ping -c 5 -W 2' -s '| grep loss' # first copy this line and press Enter
+runp -p 'ping -c 5 -W 2' -s '| grep loss' # First copy this line and press Enter
 localhost
 1.1.1.1
 8.8.8.8
