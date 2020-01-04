@@ -95,13 +95,15 @@ perl -wE 'for (1..10) { say $ENV{CURL} }' | runp -q # Make 10 requests
 ### Find open TCP ports
 
 ```
-$ cat host-port.txt
+cat << EOF > /tmp/host-port.txt
 localhost 80
 localhost 81
 127.0.0.1 443
 127.0.0.1 444
 localhost 22
-$ cat host-port.txt | runp -p 'netcat -v -w2 -z' -q 2>&1 | egrep 'open$'
+EOF
+
+cat /tmp/host-port.txt | runp -p 'netcat -v -w2 -z' -q 2>&1 | egrep 'open$'
 localhost [127.0.0.1] 443 (https) open
 localhost [127.0.0.1] 80 (http) open
 localhost [127.0.0.1] 22 (ssh) open
