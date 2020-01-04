@@ -122,12 +122,11 @@ make install
 Test and build (cross-compile for multiple platforms):
 
 ```
+# NOTE: don't forget to bump up the version in main.go!
 make release
 ```
 
 Working with GitHub releases:
-
-*NOTE*: don't forget to bump up the version in `main.go`!
 
 ```
 # List existing tags

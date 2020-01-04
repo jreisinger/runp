@@ -9,27 +9,41 @@ import (
 	"github.com/jreisinger/runp/util"
 )
 
-func usage() {
-	desc := `Run commands from file(s) or stdin in parallel. Commands must be separated by
+//
+// Command line flags and usage message.
+//
+
+var noshell = flag.Bool("n", false, "don't invoke shell and don't expand env. vars")
+var prefix = flag.String("p", "", "prefix to put in front of the commands")
+var suffix = flag.String("s", "", "suffix to put behind the commands")
+var goroutines = flag.Int("g", 10, "max number of commands (goroutines) to run in parallel")
+var quiet = flag.Bool("q", false, "be quiet")
+var version = flag.Bool("v", false, "print version")
+var help = flag.Bool("h", false, "print help")
+
+func init() {
+	flag.Usage = func() {
+		desc := `Run commands from file(s) or stdin in parallel. Commands must be separated by
 newlines. Comments and empty lines are ignored. https://github.com/jreisinger/runp`
-	fmt.Fprintf(os.Stderr, "%s\n\nUsage: %s [options] [file ...]\n", desc, os.Args[0])
-	flag.PrintDefaults()
+		fmt.Fprintf(os.Stderr, "%s\n\nUsage: %s [options] [file ...]\n", desc, os.Args[0])
+		flag.PrintDefaults()
+	}
 }
 
+//
+// Main.
+//
+
 func main() { // main itself runs in a goroutine
-	flag.Usage = usage
-
-	noshell := flag.Bool("n", false, "don't invoke shell and don't expand env. vars")
-	version := flag.Bool("V", false, "print version")
-	prefix := flag.String("p", "", "prefix to put in front of the commands")
-	suffix := flag.String("s", "", "suffix to put behind the commands")
-	goroutines := flag.Int("g", 10, "max number of commands (goroutines) to run in parallel")
-	quiet := flag.Bool("q", false, "be quiet")
-
 	flag.Parse()
 
 	if *version {
-		fmt.Printf("runp %s\n", "v2.3.0")
+		fmt.Printf("runp %s\n", "v3.3.0")
+		os.Exit(0)
+	}
+
+	if *help {
+		flag.Usage()
 		os.Exit(0)
 	}
 
@@ -48,6 +62,7 @@ func main() { // main itself runs in a goroutine
 	if !*quiet {
 		go util.ProgressBar()
 	}
+
 	for _, command := range cmds {
 		if *prefix != "" {
 			command = *prefix + " " + command
