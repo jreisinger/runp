@@ -60,7 +60,7 @@ We used `-p` and `-s` to add prefix and suffix strings to the commands (hosts in
 ### Get directories' sizes (read from stdin)
 
 ```
-echo -e "$HOME\n/etc\n/tmp" | runp -q -p 'du -sh'
+echo -e "$HOME\n/etc\n/tmp" | runp -q -p 'sudo du -sh'
 ```
 
 We suppressed the printing of `runp`'s progress bar and info about command's execution by using the `-q` flag.
