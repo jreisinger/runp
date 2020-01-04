@@ -65,7 +65,7 @@ echo -e "$HOME\n/etc\n/tmp" | runp -q -p 'sudo du -sh'
 
 We suppressed the printing of `runp`'s progress bar and info about command's execution by using the `-q` flag.
 
-### Get Jupiter images from NASA
+### Download Jupiter images from NASA
 
 ```
 base='https://images-api.nasa.gov/search'
