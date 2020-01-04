@@ -77,7 +77,7 @@ jq -r .collection.items[].href | runp -p 'curl -s' | jq -r .[] | grep large | \
 runp -p 'curl -s -L -O'
 ```
 
-If you want to see how much time you just saved add `-g 1` to both `runp` invocations :-). It will execute the commands sequentially.
+If you want to see how much time you've just saved add `-g 1` to both `runp` invocations :-). It will execute the commands sequentially.
 
 ### Compress images
 
