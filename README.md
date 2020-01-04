@@ -52,7 +52,7 @@ runp -p 'ping -c 5 -W 2' -s '| grep loss' # first copy this line and press Enter
 localhost
 1.1.1.1
 8.8.8.8
-# Press `Ctrl-D` when done entering the hosts
+# Press Enter and Ctrl-D when done entering the hosts
 ```
 
 We used `-p` and `-s` to add prefix and suffix strings to the commands (hosts in this case).
