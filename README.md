@@ -13,7 +13,7 @@ Download the latest [release](https://github.com/jreisinger/runp/releases) to yo
 export SYS=linux  # or darwin
 export ARCH=amd64 # or arm
 
-# download an make executable
+# download and make executable
 curl -L https://github.com/jreisinger/runp/releases/latest/download/runp-$SYS-$ARCH -o ~/bin/runp
 chmod u+x ~/bin/runp
 ```
