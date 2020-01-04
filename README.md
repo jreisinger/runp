@@ -103,7 +103,7 @@ localhost 81
 localhost 22
 EOF
 
-cat /tmp/host-port.txt | runp -p 'netcat -v -w2 -z' -q 2>&1 | egrep 'open$'
+cat /tmp/host-port.txt | runp -p 'netcat -v -w2 -z' -q 2>&1 | egrep '(succeeded!|open)$'
 localhost [127.0.0.1] 443 (https) open
 localhost [127.0.0.1] 80 (http) open
 localhost [127.0.0.1] 22 (ssh) open
