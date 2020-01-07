@@ -42,7 +42,9 @@ real	0m8.608s
 <...snip...>
 ```
 
-It's 63 seconds vs 9 seconds. Not bad. There's also a related blog [post](https://jreisinger.github.io/blog2/posts/runp/) (with a movie! :-).
+It's 63 seconds vs 9 seconds. Not bad. 
+
+You might also like to see a related blog [post](https://jreisinger.github.io/blog2/posts/runp/) (with a movie! :-).
 
 ## Installation
 
