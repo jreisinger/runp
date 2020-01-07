@@ -21,7 +21,9 @@ jq -r .[] | grep large | runp -p 'curl -s -L -O'
 Now let's measure how much time can we save using `runp`. Firs let's download the images sequentially (as you would without `runp`):
 
 ```
-$ time curl -s $url | jq -r .collection.items[].href | runp -q -p 'curl -s' | jq -r .[] | grep large | runp -q -p 'curl -s -L -O'
+$ time curl -s $url | jq -r .collection.items[].href | \
+runp -q -p 'curl -s' | jq -r .[] | grep large | \
+runp -q -p 'curl -s -L -O'
 
 real	0m8.608s
 <...snip...>
@@ -30,7 +32,9 @@ real	0m8.608s
 Now remove the `-g 1` option to download the images in parallel:
 
 ```
-$ time curl -s $url | jq -r .collection.items[].href | runp -g 1 -q -p 'curl -s' | jq -r .[] | grep large | runp -g 1 -q -p 'curl -s -L -O'
+$ time curl -s $url | jq -r .collection.items[].href | \
+runp -g 1 -q -p 'curl -s' | jq -r .[] | grep large | \
+runp -g 1 -q -p 'curl -s -L -O'
 
 real	1m3.220s
 <...snip...>
