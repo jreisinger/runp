@@ -18,7 +18,7 @@ runp -p 'curl -s' | jq -r .[] | grep large | \
 runp -p 'curl -s -L -O'
 ```
 
-If you want to try it yourself just copy/paste the code above ^.
+If you want to try it yourself just copy the code above ^. Then paste it to your terminal and hit Enter.
 
 Now let's measure how much time we save using `runp`. First let's download the images sequentially (as you would without `runp`):
 
