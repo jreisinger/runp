@@ -72,9 +72,10 @@ base='https://images-api.nasa.gov/search'
 query='jupiter'
 desc='planet'
 type='image'
-curl -s "$base?q=$query&description=$desc&media_type=$type" | \
-jq -r .collection.items[].href | runp -p 'curl -s' | jq -r .[] | grep large | \
-runp -p 'curl -s -L -O'
+url="$base?q=$query&description=$desc&media_type=$type"
+curl -s $url | \
+jq -r .collection.items[].href | runp -q -p 'curl -s' | \
+jq -r .[] | grep large | runp -p 'curl -s -L -O'
 ```
 
 If you want to see how much time you've just saved add `-g 1` to both `runp` invocations :-). It will execute the commands sequentially.
