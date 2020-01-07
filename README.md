@@ -2,6 +2,24 @@
 
 `runp` is a simple command line tool that runs (shell) commands in parallel. It's useful when you want to run multiple commands at once to save time. It's easy to install since it's a single binary. It's been tested on Linux (amd64 and arm) and MacOS/darwin (amd64).
 
+Imagine you want to download several images of Jupiter from NASA. Here's how `runp` can help you to speed the process up:
+
+```
+# Let's define the URL to download from
+base='https://images-api.nasa.gov/search'
+query='jupiter'
+desc='planet'
+type='image'
+url="$base?q=$query&description=$desc&media_type=$type"
+# Dowload the images in parallel
+curl -s $url | \
+jq -r .collection.items[].href | runp -p 'curl -s' | \
+jq -r .[] | grep large | runp -p 'curl -s -L -O'
+```
+
+If you want to see how much time you've just saved add `-g 1` to both `runp` invocations :-). It will execute the commands sequentially, i.e. one at a time.
+
+
 There's also a related blog [post](https://jreisinger.github.io/blog2/posts/runp/) (with a movie! :-).
 
 ## Installation
@@ -65,25 +83,10 @@ echo -e "$HOME\n/etc\n/tmp" | runp -q -p 'sudo du -sh'
 
 We suppressed the printing of `runp`'s progress bar and info about command's execution by using the `-q` flag.
 
-### Download Jupiter images from NASA
+### Compress files
 
 ```
-base='https://images-api.nasa.gov/search'
-query='jupiter'
-desc='planet'
-type='image'
-url="$base?q=$query&description=$desc&media_type=$type"
-curl -s $url | \
-jq -r .collection.items[].href | runp -p 'curl -s' | \
-jq -r .[] | grep large | runp -p 'curl -s -L -O'
-```
-
-If you want to see how much time you've just saved add `-g 1` to both `runp` invocations :-). It will execute the commands sequentially, i.e. one at a time.
-
-### Compress images
-
-```
-find . -iname '*.jpg' | runp -p 'gzip --best'
+find . -iname '*.txt' | runp -p 'gzip --best'
 ```
 
 ### Measure HTTP request + response time
