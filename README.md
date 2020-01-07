@@ -18,7 +18,7 @@ jq -r .collection.items[].href | runp -p 'curl -s' | \
 jq -r .[] | grep large | runp -p 'curl -s -L -O'
 ```
 
-Now let's measure how much time can we save using `runp`. Firs let's download the images sequentially (as you would without `runp`):
+Now let's measure how much time we save using `runp`. First let's download the images sequentially (as you would without `runp`):
 
 ```
 $ time curl -s $url | jq -r .collection.items[].href | \
