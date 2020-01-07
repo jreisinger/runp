@@ -11,14 +11,32 @@ query='jupiter'
 desc='planet'
 type='image'
 url="$base?q=$query&description=$desc&media_type=$type"
-# Dowload the images in parallel
+
+# Download the images in parallel using runp
 curl -s $url | \
 jq -r .collection.items[].href | runp -p 'curl -s' | \
 jq -r .[] | grep large | runp -p 'curl -s -L -O'
 ```
 
-If you want to see how much time you've just saved add `-g 1` to both `runp` invocations :-). It will execute the commands sequentially, i.e. one at a time.
+Now let's measure how much time can we save using `runp`. Firs let's download the images sequentially (as you would without `runp`):
 
+```
+$ time curl -s $url | jq -r .collection.items[].href | runp -q -p 'curl -s' | jq -r .[] | grep large | runp -q -p 'curl -s -L -O'
+
+real	0m8.608s
+<...snip...>
+```
+
+Now remove the `-g 1` option to download the images in parallel:
+
+```
+$ time curl -s $url | jq -r .collection.items[].href | runp -g 1 -q -p 'curl -s' | jq -r .[] | grep large | runp -g 1 -q -p 'curl -s -L -O'
+
+real	1m3.220s
+<...snip...>
+```
+
+It's 63 seconds vs 9 seconds. Not bad.
 
 There's also a related blog [post](https://jreisinger.github.io/blog2/posts/runp/) (with a movie! :-).
 
