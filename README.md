@@ -56,7 +56,8 @@ export SYS=linux  # or darwin
 export ARCH=amd64 # or arm
 
 # Download the binary and make it executable.
-curl -L https://github.com/jreisinger/runp/releases/latest/download/runp-$SYS-$ARCH -o ~/bin/runp
+curl -L https://github.com/jreisinger/runp/releases/latest/download/runp-$SYS-$ARCH \
+-o ~/bin/runp
 chmod u+x ~/bin/runp
 ```
 
