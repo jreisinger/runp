@@ -2,22 +2,7 @@
 
 `runp` is a simple command line tool that runs (shell) commands in parallel. It's useful when you want to run multiple commands at once to save time. It's easy to install since it's a single binary. It's been tested on Linux (amd64 and arm) and MacOS/darwin (amd64).
 
-## Installation
-
-Download the latest [release](https://github.com/jreisinger/runp/releases) to your `bin` folder (or some other folder on your `PATH`) and make it executable:
-
-```
-# Choose your system and architecture.
-export SYS=linux  # or darwin
-export ARCH=amd64 # or arm
-
-# Download the binary and make it executable.
-curl -L https://github.com/jreisinger/runp/releases/latest/download/runp-$SYS-$ARCH \
--o ~/bin/runp
-chmod u+x ~/bin/runp
-```
-
-## Demo
+## Why
 
 To give you an example imagine you want to download several images of Jupiter from NASA. Here's how `runp` can help you to speed the process up:
 
@@ -62,6 +47,21 @@ real	0m8.608s
 It's 63 seconds vs 9 seconds. Not bad. 
 
 You might also like to see a related blog [post](https://jreisinger.github.io/blog2/posts/runp/) (with a movie! :-).
+
+## Installation
+
+Download the latest [release](https://github.com/jreisinger/runp/releases) to your `bin` folder (or some other folder on your `PATH`) and make it executable:
+
+```
+# Choose your system and architecture.
+export SYS=linux  # or darwin
+export ARCH=amd64 # or arm
+
+# Download the binary and make it executable.
+curl -L https://github.com/jreisinger/runp/releases/latest/download/runp-$SYS-$ARCH \
+-o ~/bin/runp
+chmod u+x ~/bin/runp
+```
 
 ## Description and Usage examples
 
