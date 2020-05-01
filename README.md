@@ -12,13 +12,16 @@ desc='planet'
 type='image'
 url="$base?q=$query&description=$desc&media_type=$type"
 
-# Download the images in parallel using runp
-curl -s $url | jq -r .collection.items[].href | \
-runp -p 'curl -s' | jq -r .[] | grep large | \
-runp -p 'curl -s -L -O'
+# Download the images in parallel using runp and time it:
+time curl -s $url | jq -r .collection.items[].href | \
+runp -q -p 'curl -s' | jq -r .[] | grep large | \
+runp -q -p 'curl -s -L -O'
+
+real	0m8.608s
+<...snip...>
 ```
 
-Now let's measure how much time we save using `runp`. First let's download the images sequentially (as you would without `runp`):
+Now let's measure how much time we save using `runp`. Let's download the images sequentially (as you would without `runp`) by using the `-g 1` option:
 
 ```
 $ time curl -s $url | jq -r .collection.items[].href | \
@@ -29,18 +32,7 @@ real	1m3.220s
 <...snip...>
 ```
 
-Now remove the `-g 1` option to download the images in parallel:
-
-```
-$ time curl -s $url | jq -r .collection.items[].href | \
-runp -q -p 'curl -s' | jq -r .[] | grep large | \
-runp -q -p 'curl -s -L -O'
-
-real	0m8.608s
-<...snip...>
-```
-
-It's 63 seconds vs 9 seconds. Not bad. 
+It's 9 seconds vs 63 seconds. Hmm ...
 
 You might also like to see a related blog [post](https://jreisinger.github.io/blog2/posts/runp/) (with a movie! :-).
 
