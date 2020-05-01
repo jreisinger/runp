@@ -2,8 +2,6 @@
 
 `runp` is a simple command line tool that runs (shell) commands in parallel. It's useful when you want to run multiple commands at once to save time. It's easy to install since it's a single binary. It's been tested on Linux (amd64 and arm) and MacOS/darwin (amd64).
 
-## Why
-
 To give you an example imagine you want to download several images of Jupiter from NASA. Here's how `runp` can help you to speed the process up:
 
 ```
@@ -19,8 +17,6 @@ curl -s $url | jq -r .collection.items[].href | \
 runp -p 'curl -s' | jq -r .[] | grep large | \
 runp -p 'curl -s -L -O'
 ```
-
-If you want to try it yourself just copy the commands above ^. Then paste it to your terminal and hit Enter. After a while you should find a bunch of Jupiter images in the folder from which you ran the commands.
 
 Now let's measure how much time we save using `runp`. First let's download the images sequentially (as you would without `runp`):
 
