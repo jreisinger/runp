@@ -5,15 +5,12 @@
 To give you an example imagine you want to download several images of Jupiter from NASA. Here's how `runp` can help you to speed the process up:
 
 ```
-# Let's define the URL to download from
-base='https://images-api.nasa.gov/search'
-query='jupiter'
-desc='planet'
-type='image'
-url="$base?q=$query&description=$desc&media_type=$type"
+# Let's define the URL to download from 
+$ base='https://images-api.nasa.gov/search'
+$ url="$base?q=jupiter&description=planet&media_type=image"
 
 # Download the images in parallel using runp and time it:
-time curl -s $url | jq -r .collection.items[].href | \
+$ time curl -s $url | jq -r .collection.items[].href | \
 runp -q -p 'curl -s' | jq -r .[] | grep large | \
 runp -q -p 'curl -s -L -O'
 
@@ -21,7 +18,7 @@ real	0m8.608s
 <...snip...>
 ```
 
-Now let's measure how much time we save using `runp`. Let's download the images sequentially (as you would without `runp`) by using the `-g 1` option:
+Now let's see how much time did we save using `runp`. Let's download the images sequentially (as you would without `runp`) by using the `-g 1` option:
 
 ```
 $ time curl -s $url | jq -r .collection.items[].href | \
