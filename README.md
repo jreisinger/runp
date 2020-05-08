@@ -2,6 +2,8 @@
 
 `runp` is a simple command line tool that runs (shell) commands in parallel. It's useful when you want to run multiple commands at once to save time. It's easy to install since it's a single binary. It's been tested on Linux (amd64 and arm) and MacOS/darwin (amd64).
 
+[![asciicast](https://asciinema.org/a/7feeJt5Dsp5VlzJUwuyUvLboU.svg)](https://asciinema.org/a/7feeJt5Dsp5VlzJUwuyUvLboU)
+
 To give you an example imagine you want to download several images of Jupiter from NASA. Here's how `runp` can help you to speed the process up:
 
 ```
