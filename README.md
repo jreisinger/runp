@@ -4,36 +4,7 @@
 
 [![asciicast](https://asciinema.org/a/7feeJt5Dsp5VlzJUwuyUvLboU.svg)](https://asciinema.org/a/7feeJt5Dsp5VlzJUwuyUvLboU)
 
-To give you an example imagine you want to download several images of Jupiter from NASA. Here's how `runp` can help you to speed the process up:
-
-```
-# Let's define the URL to download from 
-$ base='https://images-api.nasa.gov/search'
-$ url="$base?q=jupiter&description=planet&media_type=image"
-
-# Download the images in parallel using runp and time it:
-$ time curl -s $url | jq -r .collection.items[].href | \
-runp -q -p 'curl -s' | jq -r .[] | grep large | \
-runp -q -p 'curl -s -L -O'
-
-real	0m8.608s
-<...snip...>
-```
-
-Now let's see how much time did we save using `runp`. Let's download the images sequentially (as you would without `runp`) by using the `-g 1` option:
-
-```
-$ time curl -s $url | jq -r .collection.items[].href | \
-runp -g 1 -q -p 'curl -s' | jq -r .[] | grep large | \
-runp -g 1 -q -p 'curl -s -L -O'
-
-real	1m3.220s
-<...snip...>
-```
-
-It's 9 seconds vs 63 seconds. Hmm ...
-
-You might also like to see a related blog [post](https://jreisinger.github.io/blog2/posts/runp/) (with a movie! :-).
+You might also like to see a related blog [post](https://jreisinger.github.io/blog2/posts/runp/).
 
 ## Installation
 
