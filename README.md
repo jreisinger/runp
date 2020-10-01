@@ -2,7 +2,23 @@
 
 `runp` is a simple command line tool that runs (shell) commands in parallel to save time. It's easy to install since it's a single binary. It's been tested on Linux (amd64 and arm) and MacOS/darwin (amd64).
 
-[![asciicast](https://asciinema.org/a/7feeJt5Dsp5VlzJUwuyUvLboU.svg)](https://asciinema.org/a/7feeJt5Dsp5VlzJUwuyUvLboU)
+```
+$ cat cleanup.txt 
+kubectl delete all -l what=ckad
+kubectl delete ing -l what=ckad
+kubectl delete cm -l what=ckad
+kubectl delete secret -l what=ckad
+
+$ runp cleanup.txt 
+--> OK (1.05s): /bin/sh -c "kubectl delete secret -l what=ckad"
+No resources found
+--> OK (1.05s): /bin/sh -c "kubectl delete ing -l what=ckad"
+No resources found
+--> OK (1.08s): /bin/sh -c "kubectl delete cm -l what=ckad"
+No resources found
+--> OK (3.78s): /bin/sh -c "kubectl delete all -l what=ckad"
+No resources found
+```
 
 You might also like to see a related blog [post](https://jreisinger.github.io/blog2/posts/runp/).
 
