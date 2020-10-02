@@ -103,7 +103,7 @@ scanme.nmap.org 23
 scanme.nmap.org 443
 EOF
 
-cat /tmp/host-port.txt | runp -q -p 'netcat -v -w2 -z' 2>&1 | egrep '(succeeded!|open)$'
+cat /tmp/host-port.txt | runp -q -p 'nc -v -w2 -z' 2>&1 | egrep '(succeeded!|open)$'
 ```
 
 We used `-q` to suppress output from `runp` itself. Then we redirect stderr to stdout since netcat prints its messages to stderr. This way we can `grep` netcat's messages.
