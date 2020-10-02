@@ -85,8 +85,8 @@ find . -iname '*.txt' | runp -p 'gzip --best'
 ### Measure HTTP request + response time
 
 ```
-export CURL="curl -w 'time_total:  %{time_total}\n' -o /dev/null -s https://golang.org/"
-for n in {1..10}; do echo $CURL; done | runp -q # Make 10 requests
+export CURL="curl -w 'time_total:  %{time_total}\n' -o /dev/null -s "
+for n in {1..10}; do echo $CURL https://yahoo.net; done | runp -q # 10 requests
 ```
 
 ### Find open TCP ports
