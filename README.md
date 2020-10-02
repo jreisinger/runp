@@ -39,7 +39,7 @@ curl -L https://github.com/jreisinger/runp/releases/latest/download/runp-$SYS-$A
 chmod u+x ~/bin/runp
 ```
 
-## Description and Usage examples
+## Description and usage examples
 
 Commands (or parts of them) can be read from files or stdin and must be separated by newlines. Comments and empty lines are ignored.
 
