@@ -3,12 +3,14 @@
 `runp` is a simple command line tool that runs (shell) commands in parallel to save time. It's easy to install since it's a single binary. It's been tested on Linux (amd64 and arm) and MacOS/darwin (amd64).
 
 ```
-$ cat cleanup.txt 
+# File containing commands we want to run in parallel.
+$ cat cleanup.txt
 kubectl delete all -l what=ckad
 kubectl delete ing -l what=ckad
 kubectl delete cm -l what=ckad
 kubectl delete secret -l what=ckad
 
+# Run commands from the file in parallel.
 $ runp cleanup.txt 
 --> OK (1.05s): /bin/sh -c "kubectl delete secret -l what=ckad"
 No resources found
@@ -47,40 +49,13 @@ You can use shell variables in the commands.
 
 `runp` prints a progress bar and info about command's execution (OK/ERR, run time, command to run) to stderr. Otherwise stdin and stderr works as you would expect. 
 
-### Run some test commands (read from file)
-
-```
-# Create a file containing commands to run in parallel.
-cat << EOF > /tmp/test-commands.txt
-sleep 5
-sleep 3
-blah     # this will fail
-ls $PWD  # PWD shell variable is used here
-EOF
-
-# Run commands from the file.
-runp /tmp/test-commands.txt > /dev/null
-```
-
-We suppressed the printing of commands' stdout by redirecting it to `/dev/null`.
-
-### Ping several hosts and see packet loss (read from stdin)
-
-```
-runp -p 'ping -c 5 -W 2' -s '| grep loss' # First copy this line and press Enter
-localhost
-1.1.1.1
-8.8.8.8
-# Press Enter and Ctrl-D when done entering the hosts
-```
-
-We used `-p` and `-s` to add prefix and suffix strings to the commands (hosts in this case).
-
 ### Compress files
 
 ```
 find . -iname '*.txt' | runp -p 'gzip --best'
 ```
+
+We used `-p` to add prefix string to the commands (filenames in this case)
 
 ### Measure HTTP request + response time
 
