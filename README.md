@@ -99,7 +99,6 @@ localhost 81
 127.0.0.1 443
 127.0.0.1 444
 scanme.nmap.org 22
-scanme.nmap.org 23
 scanme.nmap.org 443
 EOF
 
