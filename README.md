@@ -76,14 +76,6 @@ localhost
 
 We used `-p` and `-s` to add prefix and suffix strings to the commands (hosts in this case).
 
-### Get directories' sizes (read from stdin)
-
-```
-echo -e "$HOME\n/etc\n/tmp" | runp -q -p 'sudo du -sh'
-```
-
-We suppressed the printing of `runp`'s progress bar and info about command's execution by using the `-q` flag.
-
 ### Compress files
 
 ```
@@ -94,7 +86,7 @@ find . -iname '*.txt' | runp -p 'gzip --best'
 
 ```
 export CURL="curl -w 'time_total:  %{time_total}\n' -o /dev/null -s https://golang.org/"
-perl -wE 'for (1..10) { say $ENV{CURL} }' | runp -q # Make 10 requests
+for n in {1..10}; do echo $CURL; done | runp -q # Make 10 requests
 ```
 
 ### Find open TCP ports
