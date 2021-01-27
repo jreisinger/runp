@@ -84,7 +84,7 @@ func (c *Command) Run() {
 		}
 		toStderr += fmt.Sprintf("%s", slurpErr)
 		c.StderrCh <- toStderr
-		c.StdoutCh <- fmt.Sprintf("%s", "")
+		c.StdoutCh <- fmt.Sprintf("%s", slurpOut)
 
 		// Did the command return a non-zero exit code?
 		if exitError, ok := err.(*exec.ExitError); ok {
