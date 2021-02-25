@@ -108,6 +108,8 @@ git tag -a v2.1.3 -m "split code into packages, use modules, cleanup"
 # Push tags to remote
 git push origin --tags
 
+# Add files from `make release` and publish the release on GitHub
+
 # Delete tag
 git tag -d v2.0.2
 # Delete remote tag
