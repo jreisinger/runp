@@ -34,7 +34,7 @@ func (c *Command) Prepare() {
 		c.CmdToShow = c.CmdString
 	} else {
 		c.CmdString = os.ExpandEnv(c.CmdString) // expand ${var} or $var
-		shellToUse := "/bin/sh"
+		shellToUse := "/bin/bash"
 		c.CmdToRun = exec.Command(shellToUse, "-c", c.CmdString)
 		c.CmdToShow = shellToUse + " -c " + strconv.Quote(strings.Join(c.CmdToRun.Args[2:], " "))
 	}

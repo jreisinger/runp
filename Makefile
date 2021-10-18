@@ -4,7 +4,7 @@ test:
 install: test
 	GO111MODULE=on go install
 
-PLATFORMS := linux/amd64 darwin/amd64 linux/arm
+PLATFORMS := linux/amd64 linux/arm darwin/amd64
 
 temp = $(subst /, ,$@)
 os = $(word 1, $(temp))

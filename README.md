@@ -11,14 +11,14 @@ kubectl delete cm -l what=ckad
 kubectl delete secret -l what=ckad
 
 # Run commands from the file in parallel.
-$ runp cleanup.txt 
---> OK (1.05s): /bin/sh -c "kubectl delete secret -l what=ckad"
+$ runp cleanup.txt
+--> OK (1.05s): /bin/bash -c "kubectl delete secret -l what=ckad"
 No resources found
---> OK (1.05s): /bin/sh -c "kubectl delete ing -l what=ckad"
+--> OK (1.05s): /bin/bash -c "kubectl delete ing -l what=ckad"
 No resources found
---> OK (1.08s): /bin/sh -c "kubectl delete cm -l what=ckad"
+--> OK (1.08s): /bin/bash -c "kubectl delete cm -l what=ckad"
 No resources found
---> OK (3.78s): /bin/sh -c "kubectl delete all -l what=ckad"
+--> OK (3.78s): /bin/bash -c "kubectl delete all -l what=ckad"
 No resources found
 ```
 
@@ -47,7 +47,7 @@ You can use shell variables in the commands.
 
 `runp` exit status is 0 if all commands exit with 0 (OK).
 
-`runp` prints a progress bar and info about command's execution (OK/ERR, run time, command to run) to stderr. Otherwise stdin and stderr works as you would expect. 
+`runp` prints a progress bar and info about command's execution (OK/ERR, run time, command to run) to stderr. Otherwise stdin and stderr works as you would expect.
 
 ### Compress files
 

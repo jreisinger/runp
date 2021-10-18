@@ -16,7 +16,7 @@ func TestCommandPrepare(t *testing.T) {
 	if c.CmdString != "" {
 		t.Fatalf("CmdString is not empty: %v", c.CmdString)
 	}
-	if c.CmdToShow != "/bin/sh -c \"\"" {
+	if c.CmdToShow != "/bin/bash -c \"\"" {
 		t.Fatalf("CmdToShow is not empty: %v", c.CmdToShow)
 	}
 
@@ -27,7 +27,7 @@ func TestCommandPrepare(t *testing.T) {
 	if c.CmdString != "ls -l" {
 		t.Fatalf("CmdString is wrong")
 	}
-	if c.CmdToShow != "/bin/sh -c \"ls -l\"" {
+	if c.CmdToShow != "/bin/bash -c \"ls -l\"" {
 		t.Fatalf("CmdToShow is wrong")
 	}
 }
