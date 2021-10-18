@@ -97,21 +97,4 @@ Test and build (cross-compile for multiple platforms):
 make release
 ```
 
-Working with GitHub releases:
-
-```
-# List existing tags
-git tag
-
-# Add new tag
-git tag -a v2.1.3 -m "split code into packages, use modules, cleanup"
-# Push tags to remote
-git push origin --tags
-
-# Add files from `make release` and publish the release on GitHub
-
-# Delete tag
-git tag -d v2.0.2
-# Delete remote tag
-git push --delete origin v2.0.2
-```
+Working with git tags: https://reisinge.net/notes/prog/git#tags.
