@@ -82,6 +82,16 @@ cat /tmp/host-port.txt | runp -q -p 'nc -v -w2 -z' 2>&1 | egrep '(succeeded!|ope
 
 We used `-q` to suppress output from `runp` itself. Then we redirect stderr to stdout since netcat prints its messages to stderr. This way we can `grep` netcat's messages.
 
+### Clone many repos
+
+```
+gh repo list <owner> --limit 1000 | while read -r repo _; do 
+  echo gh repo clone "$repo"
+done | runp
+```
+
+[gh](https://cli.github.com/) is the GitHub's CLI tool.
+
 ## Development
 
 Test and install (to `~/go/bin/`):
