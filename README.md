@@ -22,7 +22,7 @@ No resources found
 No resources found
 ```
 
-You might also like to see a related blog [post](https://reisinge.net/blog/2019-12-17-run-commands-in-parallel).
+You might also like to see a related blog [post](https://jreisinger.blogspot.com/2019/12/runp-run-shell-commands-in-parallel.html).
 
 ## Installation
 
