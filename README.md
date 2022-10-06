@@ -106,5 +106,3 @@ Test and build (cross-compile for multiple platforms):
 # NOTE: don't forget to bump up the version in main.go!
 make release
 ```
-
-Working with git tags: https://reisinge.net/notes/prog/git#tags.
