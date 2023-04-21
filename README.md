@@ -2,15 +2,15 @@
 
 `runp` is a simple command line tool that runs (shell) commands in parallel to save time. It's easy to install since it's a single binary. It's been tested on Linux (amd64 and arm) and MacOS/darwin (amd64).
 
-```
-# File containing commands we want to run in parallel.
+```sh
+# file containing commands we want to run in parallel
 $ cat cleanup.txt
 kubectl delete all -l what=ckad
 kubectl delete ing -l what=ckad
 kubectl delete cm -l what=ckad
 kubectl delete secret -l what=ckad
 
-# Run commands from the file in parallel.
+# run commands from the file in parallel
 $ runp cleanup.txt
 --> OK (1.05s): /bin/bash -c "kubectl delete secret -l what=ckad"
 No resources found
@@ -20,6 +20,14 @@ No resources found
 No resources found
 --> OK (3.78s): /bin/bash -c "kubectl delete all -l what=ckad"
 No resources found
+```
+
+```sh
+# clone all github's organization repos (coming from stdin) in parallel
+$ gh repo list $GHORG --limit 1000 | cut -f 1 | runp -p 'gh repo clone'
+
+# check existing commits in all repos (coming from stdin) in parallel
+$ ls | runp -p 'gitleaks detect --no-banner -s'
 ```
 
 You might also like to see a related blog [post](https://jreisinger.blogspot.com/2019/12/runp-run-shell-commands-in-parallel.html).
